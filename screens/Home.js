@@ -143,7 +143,10 @@ function Home({ route, navigation }) {
     }, [route.params?.isLogin,route.params?.added,refresh]);
 
 
-
+    const toggleRefresh = (val) => {
+        setRefresh(!refresh);
+    }
+    
     const toggleForm = (val) => {
       /*  setViewForm(!viewForm)
         if (btnTxt == "Add Shippment") {
@@ -156,6 +159,7 @@ function Home({ route, navigation }) {
             isLogin: "True",
             token:route.params.token,
             userId:route.params?.userId,
+            refresh:toggleRefresh
         })
     }
 
@@ -164,10 +168,7 @@ function Home({ route, navigation }) {
         setShowMore(!showMore)
     }
 
-    const toggleRefresh = (val) => {
-        
-        setRefresh(!refresh);
-    }
+
 
 
     return (

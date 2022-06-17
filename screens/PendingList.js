@@ -64,10 +64,11 @@ function PendingList(props) {
               console.log("Delete Tracking")
               console.log(res.status)
               if (res.status == 200) {
-                  props.navigation.navigate('Home', {
-                      isLogin: "True",
-                      token: props.token
-                  })
+                props.refresh();
+                //   props.navigation.navigate('Home', {
+                //       isLogin: "True",
+                //       token: props.token
+                //   })
               }else {
                   console.log(res)
                   setDeleteError("True");    
