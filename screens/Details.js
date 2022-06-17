@@ -22,6 +22,7 @@ function Details(props) {
     console.log("Start Tracking API calling")
     //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8000/tracking`;
     const uri='https://shipping-backend.vercel.app/tracking';
+     uri='https://shippingbackend.herokuapp.com/tracking';
     console.log({
       "id":props.id,
       "shipper": props.shipper,

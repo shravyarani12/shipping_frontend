@@ -76,6 +76,7 @@ function AddTracking({ route, navigation }) {
             if (isValid()) {
                 // const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
                 const uri = 'https://shipping-backend.vercel.app/addShippment';
+                 uri = 'https://shippingbackend.herokuapp.com/addShippment';
                 console.log({ ...state, shipper: shipperValue })
                 console.log({
                     headers: {
