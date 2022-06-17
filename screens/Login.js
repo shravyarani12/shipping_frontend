@@ -124,8 +124,9 @@ const isValid=()=>{
                 console.log("third")
                 let expoToken = await registerForPushNotificationsAsync();
                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/login`;
-                const uri='https://shipping-backend.vercel.app/login';
-                 uri='https://shippingbackend.herokuapp.com/login';
+                const uri=`${process.env.ROUTE}/login`
+                //const uri='https://shipping-backend.vercel.app/login';
+                 //uri='https://shippingbackend.herokuapp.com/login';
                 axios.post(uri, { ...state, expoToken: expoToken }).then(res => {
                     console.log(res.data.token)
                     console.log("uid:" + res.data.uId);

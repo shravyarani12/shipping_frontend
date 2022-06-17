@@ -84,7 +84,8 @@ function Home({ route, navigation }) {
             console.log("Home API Callback")
             console.log("calling getshipments")
             //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/getShipments`;
-            const uri='https://shipping-backend.vercel.app/getShipments';
+            const uri=`${process.env.ROUTE}/getShipments`
+            //const uri='https://shipping-backend.vercel.app/getShipments';
             console.log({
                 "authorization": "Bearer " + route.params?.token,
                 "content-type": "application/json"

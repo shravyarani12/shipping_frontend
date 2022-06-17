@@ -74,9 +74,10 @@ function AddTracking({ route, navigation }) {
 
         if (err.name == null && err.trackingNum == null && err.shipperValue == null && state.name != null && state.trackingNum != null && shipperValue != null) {
             if (isValid()) {
-                // const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
-                const uri = 'https://shipping-backend.vercel.app/addShippment';
-                 uri = 'https://shippingbackend.herokuapp.com/addShippment';
+                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
+                 const uri=`${process.env.ROUTE}/addShippment`;
+                //const uri = 'https://shipping-backend.vercel.app/addShippment';
+                // uri = 'https://shippingbackend.herokuapp.com/addShippment';
                 console.log({ ...state, shipper: shipperValue })
                 console.log({
                     headers: {

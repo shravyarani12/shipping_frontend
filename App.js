@@ -10,6 +10,12 @@ import AddTracking from './screens/AddTracking';
 import NewTracking from "./screens/NewTracking";
 import registerNNPushToken from 'native-notify';
 
+import Constants from "expo-constants";
+const { manifest } = Constants;
+
+//process.env.ROUTE=`http://${manifest.debuggerHost.split(':').shift()}:8080`;
+//process.env.ROUTE = 'https://shipping-backend.vercel.app';
+process.env.ROUTE = 'https://shippingbackend.herokuapp.com';
 export default function App() {
   //registerNNPushToken(2988, 'KVpPJHcdkZMXyaAsAvsmhz');
   
