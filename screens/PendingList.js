@@ -123,10 +123,9 @@ function PendingList(props) {
                     </View>
                     <View style={{ "marginLeft": "auto",paddingRight: 10  }}>
                         <TouchableWithoutFeedback onPress={() => deleteEntry(props.item.id)}   >
-                            <Image
-                                style={{ width: 25, height: 25, borderRadius: 50, borderWidth: 0 }}
-                                source={ICONS["delete"]}
-                            />
+                            <View style={{display: "flex", flexDirection: "row", alignItems: "stretch",backgroundColor:"red",paddingLeft:10,paddingRight:10,borderRadius:10}}>
+                            <Text style={{fontSize:16,fontWeight:"bold"}}>Delete</Text> 
+                            </View>
                         </TouchableWithoutFeedback>
                     </View>
                 </SafeAreaView>
