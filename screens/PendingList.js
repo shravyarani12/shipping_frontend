@@ -37,7 +37,7 @@ function PendingList(props) {
     const callShowMoreDetails = (val) => {
         console.log("toggleMore")
         setExpandMore(!expandMore)
-        expandMore == "More Details" ? setExpandMoreText("Less Details") : setExpandMoreText("More Details");
+        expandMoreText == "More Details" ? setExpandMoreText("Less Details") : setExpandMoreText("More Details");
     }
 
 
@@ -140,7 +140,7 @@ function PendingList(props) {
                     </SafeAreaView>
                     <SafeAreaView style={{ flexDirection: "row", justifyContent: "flex-start" }}>
                         <Pressable style={styles.button3} onPress={() => callShowMoreDetails()}>
-                            <Text style={styles.buttonText}>Click for More Details</Text>
+                            <Text style={styles.buttonText}>Click here for {expandMoreText}</Text>
                         </Pressable>
                     </SafeAreaView>
                     <SafeAreaView style={{ flexDirection: "row", justifyContent: "flex-end" }}>

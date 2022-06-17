@@ -20,7 +20,6 @@ function Details(props) {
   const [error, setError] = useState(null)
   const callShowMoreDetails = useCallback((tNum) => {
     console.log("Start Tracking API calling")
-    
     const uri=`${process.env.ROUTE}/tracking`
     //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8000/tracking`;
     //const uri='https://shipping-backend.vercel.app/tracking';
@@ -45,7 +44,13 @@ function Details(props) {
       //console.log(res.data)
       //console.log(res.data.tracking_number==props.tNum)
       if (res.status == 200 && res.data.tracking_number==props.tNum) {
-        setState({...res.data});
+        if(res.data && res.data.tracking_number!=null && res.data.tracking_status?.status!=null){
+          setState({...res.data});
+        }else{
+          setError("true");
+          setState(null)
+        }
+        
       } else {
         console.log("errror")
         setError("true");
@@ -65,11 +70,12 @@ function Details(props) {
     callShowMoreDetails()
   }, [callShowMoreDetails])
 
-
+  console.log(state)
   return (
+    
     <View>
    {error && <Text style={{color:"white",backgroundColor:"red"}}>Failed to Get More Details</Text>} 
-    {state && state.tracking_number &&   
+    {state && state.tracking_number!=null && state.tracking_status?.status!=null &&
     <View>
       <SafeAreaView style={{ flexDirection: "row" }}>
         <Text style={{ flex: 0 }}>Status: </Text>
