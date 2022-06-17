@@ -20,9 +20,12 @@ function Details(props) {
   const [error, setError] = useState(null)
   const callShowMoreDetails = useCallback((tNum) => {
     console.log("Start Tracking API calling")
+    
+    const uri=`${process.env.ROUTE}/tracking`
     //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8000/tracking`;
-    const uri='https://shipping-backend.vercel.app/tracking';
-     uri='https://shippingbackend.herokuapp.com/tracking';
+    //const uri='https://shipping-backend.vercel.app/tracking';
+
+     //uri='https://shippingbackend.herokuapp.com/tracking';
     console.log({
       "id":props.id,
       "shipper": props.shipper,
