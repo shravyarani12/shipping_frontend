@@ -64,7 +64,11 @@ function PendingList(props) {
               console.log("Delete Tracking")
               console.log(res.status)
               if (res.status == 200) {
-                props.refresh();
+                props.deleteMessage("deleted")
+                setTimeout(()=>{
+                    props.refresh();
+                },500)
+                
                 //   props.navigation.navigate('Home', {
                 //       isLogin: "True",
                 //       token: props.token
@@ -149,7 +153,7 @@ function PendingList(props) {
                     </SafeAreaView>
 
                     {expandMore && <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
-                        <Details tNum={props.item.trackingNum} token={props.token} shipper={props.item.shipper} id={props.item.id} navigation={props.navigation} />
+                        <Details tNum={props.item.trackingNum} token={props.token} shipper={props.item.shipper} id={props.item.id} navigation={props.navigation}/>
                     </SafeAreaView>
                     }
                 </SafeAreaView>}

@@ -29,6 +29,7 @@ function Home({ route, navigation }) {
     const [viewForm, setViewForm] = useState(false);
     const [btnTxt, setBtnTxt] = useState("Add Shippment");
     const [showPendingMore, setShowPendingMore] = useState([]);
+    const [deleteMessage, setDeleteMessage] = useState(null)
 
     const [isLogin, setIsLogin] = useState(null);
     const isMounted = useRef(false);
@@ -36,18 +37,18 @@ function Home({ route, navigation }) {
     const [refreshInterval, setRefreshInterval] = useState(0);
 
 
-    useEffect(() => {
-        console.log("Notif")
-        console.log(route.params?.uId)
-        async function fetchData() {
-            if(route.params?.uId!=null){
-                let notifications = await getIndieNotificationInbox(route.params?.uId, 2988, 'KVpPJHcdkZMXyaAsAvsmhz');
-                console.log("notifications: ", notifications);
-                //setData(notifications);
-            }
-        }
-        fetchData();
-    });
+    // useEffect(() => {
+    //     console.log("Notif")
+    //     console.log(route.params?.uId)
+    //     async function fetchData() {
+    //         if(route.params?.uId!=null){
+    //             let notifications = await getIndieNotificationInbox(route.params?.uId, 2988, 'KVpPJHcdkZMXyaAsAvsmhz');
+    //             console.log("notifications: ", notifications);
+    //             //setData(notifications);
+    //         }
+    //     }
+    //     fetchData();
+    // });
     //navigation
     useEffect(() => {
         navigation.setOptions({
@@ -99,7 +100,7 @@ function Home({ route, navigation }) {
                 console.log("API calling")
                 //console.log(res.data)
                 if (res.status == 200) {
-
+                    setDeleteMessage(null);
                     setPendingItemsList(res.data.pendingShipments)
                     setDeliveredItemsList(res.data.deliveredShipments)
                 } else {
@@ -144,9 +145,10 @@ function Home({ route, navigation }) {
 
 
     const toggleRefresh = (val) => {
+        setDeleteMessage(null);
         setRefresh(!refresh);
     }
-    
+
     const toggleForm = (val) => {
       /*  setViewForm(!viewForm)
         if (btnTxt == "Add Shippment") {
@@ -159,16 +161,18 @@ function Home({ route, navigation }) {
             isLogin: "True",
             token:route.params.token,
             userId:route.params?.userId,
-            refresh:toggleRefresh
         })
     }
 
     const toggleMore = (val) => {
         console.log("toggleMore")
-        setShowMore(!showMore)
+        setShowMore(!showMore);
+        setDeleteMessage(null);
     }
 
-
+const btnsetDeleteMessage=(val)=>{
+    setDeleteMessage(val)
+}
 
 
     return (
@@ -180,6 +184,7 @@ function Home({ route, navigation }) {
                         <Text style={styles.buttonText}>{btnTxt}</Text>
                     </Pressable>
                 </View>
+                {deleteMessage && <Text>Deleted Succesfully</Text>}
                 {/* <Pressable style={styles.button2} onPress={()=>toggleRefresh()}>
                                 <Text style={styles.buttonText}>Refresh</Text>
                             </Pressable> */}
@@ -196,14 +201,14 @@ function Home({ route, navigation }) {
                 </FlatList> */}
                 <ScrollView>
                     {pendingItemsList.map((item, index) => (
-                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} />
+                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh}/>
                     ))}
                 </ScrollView>
                 <Text style={{ fontSize: 16, paddingLeft: 20, paddingTop: 10, paddingBottom: 10, marginTop: 20, backgroundColor: "lightgreen" }}>Delivered shipments</Text>
 
                 <ScrollView>
                     {deliveredItemsList.map((item, index) => (
-                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} />
+                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh}/>
                     ))}
                 </ScrollView>
 

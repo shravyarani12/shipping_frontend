@@ -72,7 +72,6 @@ function Details(props) {
 
   console.log(state)
   return (
-    
     <View>
    {error && <Text style={{color:"white",backgroundColor:"red"}}>Failed to Get More Details</Text>} 
     {state && state.tracking_number!=null && state.tracking_status?.status!=null &&
