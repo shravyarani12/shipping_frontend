@@ -162,7 +162,7 @@ function AddTracking({ route, navigation }) {
                             placeholder={"Select Shipping Provider"}
                         />
                         {err.shipperValue != null && <Text style={styles.err}>Select one Shipping value</Text>}
-                        <SafeAreaView style={{ flexDirection: "row", marginBottom: 3 }}>
+                        <SafeAreaView style={{ flexDirection: "row", marginBottom: 3 ,justifyContent:"center"}}>
                             <View style={{ flex: 1, }} >
                                 <Pressable style={styles.save} onPress={save}>
                                     <Text style={styles.buttonText}>Save</Text>
@@ -197,6 +197,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         letterSpacing: 0.25,
         color: 'white',
+        borderRadius:20
     },
     input: {
         height: 5,
@@ -220,12 +221,12 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginLeft: 15,
         marginRight: 15,
+        width:150,
         fontSize: 8,
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
+        borderRadius: 20,
         elevation: 3,
         backgroundColor: 'green'
     },
@@ -235,11 +236,11 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         fontSize: 8,
+        width:150,
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
+        borderRadius: 20,
         elevation: 3,
         backgroundColor: 'red'
     },
@@ -259,8 +260,11 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         fontWeight: 'normal',
         letterSpacing: 0.25,
-        color: 'white',
-        paddingLeft: 10
+        color: 'black',
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderWidth:1,
+        borderRadius:20
     },
 
     textResult: {

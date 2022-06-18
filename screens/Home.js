@@ -27,7 +27,7 @@ function Home({ route, navigation }) {
     const [refresh, setRefresh] = useState(true);
     const [deliveredItemsList, setDeliveredItemsList] = useState([]);
     const [viewForm, setViewForm] = useState(false);
-    const [btnTxt, setBtnTxt] = useState("Add Shippment");
+    const [btnTxt, setBtnTxt] = useState("Add Tracking");
     const [showPendingMore, setShowPendingMore] = useState([]);
     const [deleteMessage, setDeleteMessage] = useState(null)
 
@@ -53,7 +53,7 @@ function Home({ route, navigation }) {
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity style={{paddingRight:10}}
+                <TouchableOpacity style={{ paddingRight: 10 }}
                     onPress={() => {
                         //console.log(route)
                         navigation.navigate('Login', {
@@ -61,16 +61,21 @@ function Home({ route, navigation }) {
                         })
                     }}
                 >
-                    <Text style={styles.buttonHistoryText}>Sign Out</Text>
+                    <View style={{ backgroundColor: "black", borderRadius: 20, }}>
+                        <Text style={styles.buttonHistoryText}>Sign Out</Text>
+                    </View>
+
                 </TouchableOpacity>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{paddingRight:10}}
+                <TouchableOpacity style={{ paddingRight: 10 }}
                     onPress={() => {
                         toggleRefresh()
                     }}
                 >
-                    <Text style={styles.buttonHistoryText}>Refresh</Text>
+                    <View style={{ backgroundColor: "black", borderRadius: 20, }}>
+                        <Text style={styles.buttonHistoryText}>Refresh</Text>
+                    </View>
                 </TouchableOpacity>
             )
         })
@@ -79,13 +84,13 @@ function Home({ route, navigation }) {
 
 
     const execute = () => {
-       // console.log(route.params)
+        // console.log(route.params)
         if (route.params?.token != null) {
             setIsLogin(true)
             console.log("Home API Callback")
             console.log("calling getshipments")
             //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/getShipments`;
-            const uri=`${process.env.ROUTE}/getShipments`
+            const uri = `${process.env.ROUTE}/getShipments`
             //const uri='https://shipping-backend.vercel.app/getShipments';
             console.log({
                 "authorization": "Bearer " + route.params?.token,
@@ -141,7 +146,7 @@ function Home({ route, navigation }) {
         } else {
             isMounted.current = true;
         }
-    }, [route.params?.isLogin,route.params?.added,refresh]);
+    }, [route.params?.isLogin, route.params?.added, refresh]);
 
 
     const toggleRefresh = (val) => {
@@ -150,17 +155,17 @@ function Home({ route, navigation }) {
     }
 
     const toggleForm = (val) => {
-      /*  setViewForm(!viewForm)
-        if (btnTxt == "Add Shippment") {
-            setBtnTxt("Hide Form");
-        } else {
-            setBtnTxt("Add Shippment");
-        }
-       */
+        /*  setViewForm(!viewForm)
+          if (btnTxt == "Add Shippment") {
+              setBtnTxt("Hide Form");
+          } else {
+              setBtnTxt("Add Shippment");
+          }
+         */
         navigation.navigate('AddTracking', {
             isLogin: "True",
-            token:route.params.token,
-            userId:route.params?.userId,
+            token: route.params.token,
+            userId: route.params?.userId,
         })
     }
 
@@ -170,9 +175,9 @@ function Home({ route, navigation }) {
         setDeleteMessage(null);
     }
 
-const btnsetDeleteMessage=(val)=>{
-    setDeleteMessage(val)
-}
+    const btnsetDeleteMessage = (val) => {
+        setDeleteMessage(val)
+    }
 
 
     return (
@@ -201,14 +206,14 @@ const btnsetDeleteMessage=(val)=>{
                 </FlatList> */}
                 <ScrollView>
                     {pendingItemsList.map((item, index) => (
-                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh}/>
+                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh} />
                     ))}
                 </ScrollView>
                 <Text style={{ fontSize: 16, paddingLeft: 20, paddingTop: 10, paddingBottom: 10, marginTop: 20, backgroundColor: "lightgreen" }}>Delivered shipments</Text>
 
                 <ScrollView>
                     {deliveredItemsList.map((item, index) => (
-                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh}/>
+                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh} />
                     ))}
                 </ScrollView>
 
@@ -289,11 +294,15 @@ const styles = StyleSheet.create({
     },
     buttonHistoryText: {
         fontSize: 14,
+        fontWeight: "bold",
         lineHeight: 21,
-        fontWeight: 'normal',
         letterSpacing: 0.25,
         color: 'white',
-        paddingLeft: 10
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderWidth: 2,
+        borderRadius: 20,
+        borderColor: "black"
     },
 
     textResult: {

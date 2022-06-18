@@ -15,7 +15,8 @@ import axios from "axios";
 const ICONS = {
     open: require('../assets/open.jpg'),
     close: require('../assets/close.jpg'),
-    delete:require('../assets/delete.png')
+    delete:require('../assets/delete.png'),
+    delete1:require('../assets/delete1.jpg')
 };
 
 
@@ -118,7 +119,7 @@ function PendingList(props) {
 
                         <TouchableWithoutFeedback onPress={() => toggleMore(true)}   >
                             <Image
-                                style={{ paddingLeft: 30, width: 25, height: 25, borderRadius: 50, borderWidth: 0 }}
+                                style={{ paddingLeft: 30, width: 25, height: 25, borderRadius: 60, borderWidth: 2 }}
                                 source={showMore == true ? ICONS["close"] : ICONS["open"]}
                             />
                         </TouchableWithoutFeedback>
@@ -128,8 +129,11 @@ function PendingList(props) {
                     </View>
                     <View style={{ "marginLeft": "auto",paddingRight: 10  }}>
                         <TouchableWithoutFeedback onPress={() => deleteEntry(props.item.id)}   >
-                            <View style={{display: "flex", flexDirection: "row", alignItems: "stretch",backgroundColor:"red",paddingLeft:10,paddingRight:10,borderRadius:10}}>
-                            <Text style={{fontSize:16,fontWeight:"bold"}}>Delete</Text> 
+                            <View style={{display: "flex", flexDirection: "row", alignItems: "stretch",backgroundColor:"red",borderRadius:70}}>
+                            <Image
+                                style={{ paddingLeft: 30, width: 35, height: 35  }}
+                                source={ICONS["delete1"]}
+                            />
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -229,8 +233,11 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         fontWeight: 'normal',
         letterSpacing: 0.25,
-        color: 'white',
-        paddingLeft: 10
+        color: 'black',
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderWidth:1,
+        borderRadius:20
     },
 
     textResult: {

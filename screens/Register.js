@@ -1,6 +1,6 @@
 import React, { useState, useEffect, isValidElement } from 'react'
-import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback, View, Pressable, Image } from 'react-native';
-import { Button, Input } from "react-native-elements";
+import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback,Button, View, TextInput, Pressable, Image } from 'react-native';
+import {  Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -45,27 +45,27 @@ function Register({ route, navigation }) {
     }
 
 
-    const isValid=()=>{
-        let check=false;
+    const isValid = () => {
+        let check = false;
 
-        if(state.firstName.length<3){
+        if (state.firstName.length < 3) {
             setError('First Name cannot be less than 3 characters');
             return false;
         }
-        
-        if(state.lastName.length<3){
+
+        if (state.lastName.length < 3) {
             setError('Last Name cannot be less than 3 characters');
             return false;
         }
 
         var re = /\S+@\S+\.\S+/;
-       
-        if(!re.test(state.email)){
+
+        if (!re.test(state.email)) {
             setError('Enter email in correct format');
             return false;
         }
-        
-        if(state.password.length<8){
+
+        if (state.password.length < 8) {
             setError('password must be minimum 8 characters');
             return false;
         }
@@ -80,9 +80,9 @@ function Register({ route, navigation }) {
             if (isValid()) {
 
                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/register`;
-                const uri=`${process.env.ROUTE}/register`
+                const uri = `${process.env.ROUTE}/register`
                 //let uri='https://shipping-backend.vercel.app/register';
-                 //uri='https://shippingbackend.herokuapp.com/register';
+                //uri='https://shippingbackend.herokuapp.com/register';
                 console.log(uri)
                 console.log({ ...state })
                 axios.post(uri, { ...state }, {
@@ -93,12 +93,12 @@ function Register({ route, navigation }) {
                     if (res.status == 200) {
                         clear();
                         setMessage("Registration Succesful");
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             navigation.navigate('Login', {
                                 isLogin: null
                             })
-                        },1500)
-                        
+                        }, 1500)
+
                     } else if (res.status == 403) {
                         setState({ email: null, password: null });
                         setErr({ email: null, password: null });
@@ -144,43 +144,69 @@ function Register({ route, navigation }) {
         <SafeAreaView style={styles.container1} >
             <SafeAreaView style={styles.container2}>
                 {error != null && <Text style={styles.err}>{error}</Text>}
-                <Input
+                <TextInput
                     type="text"
-                    style={styles.input}
+                    style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                        borderRadius:12
+                    }}
                     value={state.firstName}
                     onChangeText={newText => handleChange(newText, "firstName")}
                     placeholder="Enter FirstName"
                 />
                 {err.firstName != null && <Text style={styles.err}>FirstName cannot be empty</Text>}
-                <Input
+                <TextInput
                     type="text"
-                    style={styles.input}
+                    style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                        borderRadius:12
+                    }}
                     value={state.lastName}
                     onChangeText={newText => handleChange(newText, "lastName")}
-                    placeholder="Enter lastName"
+                    placeholder="Enter LastName"
                 />
                 {err.lastName != null && <Text style={styles.err}>LastName cannot be empty</Text>}
-                <Input
+                <TextInput
                     type="text"
-                    style={styles.input}
+                    style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                        borderRadius:12
+                    }}
                     value={state.email}
                     onChangeText={newText => handleChange(newText, "email")}
-                    placeholder="Enter email"
+                    placeholder="Enter Email"
                 />
-                {err.email != null && <Text style={styles.err}>email cannot be empty</Text>}
-                <Input
+                {err.email != null && <Text style={styles.err}>Enter valid email Id</Text>}
+                <TextInput
                     type="text"
-                    style={styles.input}
+                    style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                        borderRadius:12
+                    }}
                     value={state.password}
                     onChangeText={newText => handleChange(newText, "password")}
                     placeholder="Enter Password"
+                    secureTextEntry={true}
                 />
                 {err.password != null && <Text style={styles.err}>Enter password</Text>}
-                <View style={{ marginVertical: 2 }}>
-                    <Pressable style={styles.button2} onPress={register}>
+                <View style={{ marginVertical: 2,flexDirection: 'row',
+                    justifyContent: 'center' }}>
+                    <Pressable style={styles.button21} onPress={register}>
                         <Text style={styles.buttonText}>Regsiter</Text>
                     </Pressable>
-                    <Pressable style={styles.button2} onPress={clear}>
+                    <Pressable style={styles.button22} onPress={clear}>
                         <Text style={styles.buttonText}>Clear</Text>
                     </Pressable>
                 </View>
@@ -210,7 +236,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black'
 
     },
-    button2: {
+    button21: {
         marginTop: 5,
         marginBottom: 5,
         marginLeft: 15,
@@ -222,7 +248,21 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: '#0032a0'
+        backgroundColor: 'green'
+    },
+    button22: {
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 15,
+        marginRight: 15,
+        fontSize: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: 'red'
     },
     err: {
         color: "red",
@@ -236,6 +276,7 @@ const styles = StyleSheet.create({
         letterSpacing: 0.25,
         color: 'white',
     },
+
     messageText: {
         fontSize: 16,
         lineHeight: 21,
@@ -249,8 +290,11 @@ const styles = StyleSheet.create({
         lineHeight: 21,
         fontWeight: 'normal',
         letterSpacing: 0.25,
-        color: 'white',
-        paddingLeft: 10
+        color: 'black',
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderWidth:1,
+        borderRadius:20
     },
 
     textResult: {
@@ -264,6 +308,7 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     container2: {
+        marginTop:10,
         flexDirection: "column"
     }
 });

@@ -203,8 +203,11 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: 'normal',
     letterSpacing: 0.25,
-    color: 'white',
-    paddingLeft: 10
+    color: 'black',
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderWidth:1,
+    borderRadius:20
   },
 
   textResult: {

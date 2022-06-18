@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback, View, Pressable, Image, Alert } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback, ImageBackground, View, Pressable, Image, Alert, TextInput } from 'react-native';
 import { Button, Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
@@ -16,7 +16,6 @@ import * as Notifications from 'expo-notifications';
 
 async function registerForPushNotificationsAsync() {
     let token;
-
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
 
@@ -98,25 +97,25 @@ function Login({ route, navigation }) {
     }, [execute])
 
 
-const isValid=()=>{
-    var re = /\S+@\S+\.\S+/;
-       console.log(state)
-    if(!re.test(state.email)){
-        let error = { ...err };
-        error["email"] = "Enter email in correct format";
-        setErr({ ...error });
-        return false;
-    }else if(state.password.length<8){
-        let error = { ...err };
-        error["password"] = "password must be minimum 8 characters";
-        setErr({ ...error });
-        return false;
-    }else{
-        return true;
-    }
+    const isValid = () => {
+        var re = /\S+@\S+\.\S+/;
+        console.log(state)
+        if (!re.test(state.email)) {
+            let error = { ...err };
+            error["email"] = "Enter email in correct format";
+            setErr({ ...error });
+            return false;
+        } else if (state.password.length < 8) {
+            let error = { ...err };
+            error["password"] = "password must be minimum 8 characters";
+            setErr({ ...error });
+            return false;
+        } else {
+            return true;
+        }
 
-    
-}
+
+    }
 
     const login = async () => {
         if (err.email == null && err.password == null && state.email != null && state.password != null) {
@@ -124,9 +123,9 @@ const isValid=()=>{
                 console.log("third")
                 let expoToken = await registerForPushNotificationsAsync();
                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/login`;
-                const uri=`${process.env.ROUTE}/login`
+                const uri = `${process.env.ROUTE}/login`
                 //const uri='https://shipping-backend.vercel.app/login';
-                 //uri='https://shippingbackend.herokuapp.com/login';
+                //uri='https://shippingbackend.herokuapp.com/login';
                 axios.post(uri, { ...state, expoToken: expoToken }).then(res => {
                     console.log(res.data.token)
                     console.log("uid:" + res.data.uId);
@@ -172,7 +171,7 @@ const isValid=()=>{
                         })
                     }}
                 >
-                    <Text style={styles.buttonText}>Register</Text>
+                    <Text style={styles.buttonHistoryText}>Register</Text>
                 </TouchableOpacity>
             )
 
@@ -180,32 +179,50 @@ const isValid=()=>{
 
     });
     return (
+        
         <SafeAreaView style={styles.container1} >
-            <View style={styles.weatherView}>
+            <View style={{fontSize: 16, fontWeight: 'bold', marginTop: 15,display:"flex",flexDirection:"row"}}>
                 <Image
-                    style={{ width: 80, height: 80, marginLeft: "37%", borderRadius: 50, borderWidth: 0 }}
+                    style={{ width: 100, height: 100,borderRadius: 50, borderWidth: 0,marginLeft:10 }}
                     source={ICONS['logo']}
                 />
-                <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 15, marginLeft: "25%" }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold',marginTop: 35, marginLeft:5,textAlign:"center" }}>
                     Personal Shipping Tracker
                 </Text>
             </View>
             <SafeAreaView style={styles.container2}>
                 {error != null && <Text style={styles.err}>Please enter correct email and Password</Text>}
-                <Input
+                <TextInput
                     type="text"
-                    style={styles.input}
+                    style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                        borderRadius:10,
+                        borderWidth:2
+                    }}
                     value={state.email}
                     onChangeText={newText => handleChange(newText, "email")}
                     placeholder="Enter email"
+                    textContentType={'emailAddress'}
                 />
-                {err.email != null && <Text style={styles.err}>email cannot be empty</Text>}
-                <Input
+                {err.email != null && <Text style={styles.err}>Enter valid email ID</Text>}
+                <TextInput
                     type="text"
-                    style={styles.input}
+                    style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                        borderRadius:10,
+                        borderWidth:2
+
+                    }}
                     value={state.password}
                     onChangeText={newText => handleChange(newText, "password")}
                     placeholder="Enter Password"
+                    secureTextEntry={true}
                 />
                 {err.password != null && <Text style={styles.err}>Enter password</Text>}
 
@@ -230,6 +247,11 @@ const isValid=()=>{
 export default Login
 
 const styles = StyleSheet.create({
+    container1: {
+        backgroundColor: "white",
+        margin: 0,
+        flex: 1
+      },
     input: {
         height: 5,
         margin: 2,
@@ -262,7 +284,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: 'green'
+        backgroundColor: 'green',
+        borderRadius:10
     },
     clear: {
         marginTop: 5,
@@ -276,7 +299,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         borderRadius: 4,
         elevation: 3,
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        borderRadius:10
     },
     err: {
         color: "red",
@@ -290,12 +314,16 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     buttonHistoryText: {
+        marginTop:10,
         fontSize: 14,
         lineHeight: 21,
         fontWeight: 'normal',
         letterSpacing: 0.25,
-        color: 'white',
-        paddingLeft: 10
+        color: 'black',
+        paddingLeft: 10,
+        paddingRight: 10,
+        borderWidth:1,
+        borderRadius:20
     },
 
     textResult: {
