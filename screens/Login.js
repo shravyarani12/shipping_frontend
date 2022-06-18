@@ -171,10 +171,12 @@ function Login({ route, navigation }) {
                         })
                     }}
                 >
+                    <View style={{ backgroundColor: "green", borderRadius: 20,marginTop:10 }}>
                     <Text style={styles.buttonHistoryText}>Register</Text>
+                    </View>
                 </TouchableOpacity>
-            )
-
+            ),
+            headerLeft: () => null
         })
 
     });
@@ -187,7 +189,7 @@ function Login({ route, navigation }) {
                     source={ICONS['logo']}
                 />
                 <Text style={{ fontSize: 20, fontWeight: 'bold',marginTop: 35, marginLeft:5,textAlign:"center" }}>
-                    Personal Shipping Tracker
+                    Personal Shipping Assistant
                 </Text>
             </View>
             <SafeAreaView style={styles.container2}>
@@ -314,16 +316,16 @@ const styles = StyleSheet.create({
         color: 'white',
     },
     buttonHistoryText: {
-        marginTop:10,
         fontSize: 14,
+        fontWeight: "bold",
         lineHeight: 21,
-        fontWeight: 'normal',
         letterSpacing: 0.25,
-        color: 'black',
+        color: 'white',
         paddingLeft: 10,
         paddingRight: 10,
-        borderWidth:1,
-        borderRadius:20
+        borderRadius: 20,
+        paddingTop:5,
+        paddingBottom:5
     },
 
     textResult: {
