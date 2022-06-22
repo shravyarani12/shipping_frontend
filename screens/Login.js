@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { initDBConnection, setupDataProfileListener } from "../helpers/fb-history"
 const ICONS = {
     logo: require('../assets/logo.jpg'),
+    loading: require('../assets/loading.gif'),
 };
 import axios from "axios";
 import { registerIndieID } from 'native-notify';
@@ -36,12 +37,11 @@ async function registerForPushNotificationsAsync() {
 
 
 
-
-
 function Login({ route, navigation }) {
     let [state, setState] = useState({
         email: '', password: ''
     });
+    const [loading, setLoading] = useState(null);
 
     let [err, setErr] = useState({ email: null, password: null });
     let [error, setError] = useState(null);
@@ -118,36 +118,45 @@ function Login({ route, navigation }) {
     }
 
     const login = async () => {
+
         if (err.email == null && err.password == null && state.email != null && state.password != null) {
             if (isValid()) {
                 console.log("third")
-                let expoToken = await registerForPushNotificationsAsync();
-                //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/login`;
-                const uri = `${process.env.ROUTE}/login`
-                //const uri='https://shipping-backend.vercel.app/login';
-                //uri='https://shippingbackend.herokuapp.com/login';
-                axios.post(uri, { ...state, expoToken: expoToken }).then(res => {
-                    console.log(res.data.token)
-                    console.log("uid:" + res.data.uId);
-                    //registerIndieID(res.data.uId, 2988, 'KVpPJHcdkZMXyaAsAvsmhz');
-                    if (res.status == 200) {
-                        navigation.navigate('Home', {
-                            isLogin: "True",
-                            token: res.data.token,
-                            uId: res.data.uId
-                        })
-                    }
-                    else {
-                        navigation.navigate('Register', {
-                            isLogin: null
-                        })
-                    }
-                }).catch(err => {
-                    console.log(err);
-                    setError("True")
-                })
+                setLoading(true)
+                setTimeout(async () => {
+                    let expoToken = await registerForPushNotificationsAsync();
+                    //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/login`;
+                    const uri = `${process.env.ROUTE}/login`
+                    //const uri='https://shipping-backend.vercel.app/login';
+                    //uri='https://shippingbackend.herokuapp.com/login';
+                    axios.post(uri, { ...state, expoToken: expoToken }).then(res => {
+                        console.log(res.data.token)
+                        console.log("uid:" + res.data.uId);
+                        //registerIndieID(res.data.uId, 2988, 'KVpPJHcdkZMXyaAsAvsmhz');
+                        setLoading(null);
+                        if (res.status == 200) {
+                            navigation.navigate('Home', {
+                                isLogin: "True",
+                                token: res.data.token,
+                                uId: res.data.uId
+                            })
+                        }
+                        else {
+                            setLoading(null);
+                            navigation.navigate('Register', {
+                                isLogin: null
+                            })
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                        setLoading(null);
+                        setError("True")
+                    })
+                }, 500)
+
             } else {
                 console.log("Invalid Form")
+                setLoading(null);
             }
 
         }
@@ -171,8 +180,8 @@ function Login({ route, navigation }) {
                         })
                     }}
                 >
-                    <View style={{ backgroundColor: "green", borderRadius: 20,marginTop:10 }}>
-                    <Text style={styles.buttonHistoryText}>Register</Text>
+                    <View style={{ backgroundColor: "green", borderRadius: 20, marginTop: 10 }}>
+                        <Text style={styles.buttonHistoryText}>Register</Text>
                     </View>
                 </TouchableOpacity>
             ),
@@ -181,67 +190,89 @@ function Login({ route, navigation }) {
 
     });
     return (
-        
+
         <SafeAreaView style={styles.container1} >
-            <View style={{fontSize: 16, fontWeight: 'bold', marginTop: 15,display:"flex",flexDirection:"row"}}>
+            <View style={{ fontSize: 16, fontWeight: 'bold', marginTop: 15, display: "flex", flexDirection: "row" }}>
                 <Image
-                    style={{ width: 100, height: 100,borderRadius: 50, borderWidth: 0,marginLeft:10 }}
+                    style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 0, marginLeft: 10 }}
                     source={ICONS['logo']}
                 />
-                <Text style={{ fontSize: 20, fontWeight: 'bold',marginTop: 35, marginLeft:5,textAlign:"center" }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 35, marginLeft: 5, textAlign: "center" }}>
                     Personal Shipping Assistant
                 </Text>
             </View>
-            <SafeAreaView style={styles.container2}>
-                {error != null && <Text style={styles.err}>Please enter correct email and Password</Text>}
-                <TextInput
-                    type="text"
-                    style={{
-                        height: 40,
-                        margin: 12,
-                        borderWidth: 1,
-                        padding: 10,
-                        borderRadius:10,
-                        borderWidth:2
-                    }}
-                    value={state.email}
-                    onChangeText={newText => handleChange(newText, "email")}
-                    placeholder="Enter email"
-                    textContentType={'emailAddress'}
-                />
-                {err.email != null && <Text style={styles.err}>Enter valid email ID</Text>}
-                <TextInput
-                    type="text"
-                    style={{
-                        height: 40,
-                        margin: 12,
-                        borderWidth: 1,
-                        padding: 10,
-                        borderRadius:10,
-                        borderWidth:2
+            <View style={{ flex: 1 }}>
+                <View style={{ zIndex: 2,position:"absolute",width:"100%" }} >
+                    <View>
+                        {error != null && <Text style={styles.err}>Please enter correct email and Password</Text>}
+                        <TextInput
+                            type="text"
+                            style={{
+                                height: 40,
+                                margin: 12,
+                                borderWidth: 1,
+                                padding: 10,
+                                borderRadius: 10,
+                                borderWidth: 2
+                            }}
+                            value={state.email}
+                            onChangeText={newText => handleChange(newText, "email")}
+                            placeholder="Enter email"
+                            textContentType={'emailAddress'}
+                        />
+                        {err.email != null && <Text style={styles.err}>Enter valid email ID</Text>}
+                        <TextInput
+                            type="text"
+                            style={{
+                                height: 40,
+                                margin: 12,
+                                borderWidth: 1,
+                                padding: 10,
+                                borderRadius: 10,
+                                borderWidth: 2
 
-                    }}
-                    value={state.password}
-                    onChangeText={newText => handleChange(newText, "password")}
-                    placeholder="Enter Password"
-                    secureTextEntry={true}
-                />
-                {err.password != null && <Text style={styles.err}>Enter password</Text>}
+                            }}
+                            value={state.password}
+                            onChangeText={newText => handleChange(newText, "password")}
+                            placeholder="Enter Password"
+                            secureTextEntry={true}
+                        />
+                        {err.password != null && <Text style={styles.err}>Enter password</Text>}
 
-                <SafeAreaView style={{ flexDirection: "row", marginBottom: 3 }}>
-                    <View style={{ flex: 1, }} >
-                        <Pressable style={styles.login} onPress={login}>
-                            <Text style={styles.buttonText}>Login</Text>
-                        </Pressable>
+                        <SafeAreaView style={{ flexDirection: "row", marginBottom: 3 }}>
+                            <View style={{ flex: 1, }} >
+                                <Pressable style={styles.login} onPress={login}>
+                                    <Text style={styles.buttonText}>Login</Text>
+                                </Pressable>
+                            </View>
+                            <View style={{ flex: 1, }} >
+                                <Pressable style={styles.clear} onPress={clear}>
+                                    <Text style={styles.buttonText}>Clear</Text>
+                                </Pressable>
+                            </View>
+                        </SafeAreaView>
+
+
+
                     </View>
-                    <View style={{ flex: 1, }} >
-                        <Pressable style={styles.clear} onPress={clear}>
-                            <Text style={styles.buttonText}>Clear</Text>
-                        </Pressable>
-                    </View>
-                </SafeAreaView>
+                </View>
 
-            </SafeAreaView>
+                <View style={{ zIndex: 3,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        }}>
+                    {loading && <Image
+                        style={{alignSelf:"center",width:50,height:50,marginTop:50  }}
+                        source={ICONS['loading']}
+                    />}
+                </View>
+            </View>
+
+
+
+
+
         </SafeAreaView>
     )
 }
@@ -253,7 +284,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         margin: 0,
         flex: 1
-      },
+    },
     input: {
         height: 5,
         margin: 2,
@@ -287,7 +318,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         elevation: 3,
         backgroundColor: 'green',
-        borderRadius:10
+        borderRadius: 10
     },
     clear: {
         marginTop: 5,
@@ -302,7 +333,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         elevation: 3,
         backgroundColor: 'red',
-        borderRadius:10
+        borderRadius: 10
     },
     err: {
         color: "red",
@@ -324,8 +355,8 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         borderRadius: 20,
-        paddingTop:5,
-        paddingBottom:5
+        paddingTop: 5,
+        paddingBottom: 5
     },
 
     textResult: {
@@ -340,7 +371,13 @@ const styles = StyleSheet.create({
     },
     container2: {
         marginTop: "10%",
-        flexDirection: "column",
+        marginLeft: "10%",
+        marginRight: "10%",
+    },
+    container3: {
+        zIndex: 2,
+        elevation: 50,
+        marginTop: "10%",
         marginLeft: "10%",
         marginRight: "10%",
     }
