@@ -124,12 +124,14 @@ function Login({ route, navigation }) {
                 console.log("third")
                 setLoading(true)
                 setTimeout(async () => {
+                   /* This will be used  later on for notifications
                     let expoToken = await registerForPushNotificationsAsync();
-                    //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/login`;
-                    const uri = `${process.env.ROUTE}/login`
-                    //const uri='https://shipping-backend.vercel.app/login';
-                    //uri='https://shippingbackend.herokuapp.com/login';
-                    axios.post(uri, { ...state, expoToken: expoToken }).then(res => {
+                   */
+                   
+                    //const uri = `${process.env.ROUTE}/login`;
+                    let uri = 'http://localhost:3000/login';
+                    //axios.post(uri, { ...state, expoToken: expoToken }).then(res => {
+                    axios.post(uri, { ...state}).then(res => {
                         console.log(res.data.token)
                         console.log("uid:" + res.data.uId);
                         //registerIndieID(res.data.uId, 2988, 'KVpPJHcdkZMXyaAsAvsmhz');

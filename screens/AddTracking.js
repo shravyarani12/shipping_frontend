@@ -18,11 +18,11 @@ const ICONS = {
 };
 function AddTracking({ route, navigation }) {
     const [state, setState] = useState({ name: null, trackingNum: null });
-    let [err, setErr] = useState({ name: null, trackingNum: null, shipperValue: null });
+    let [err, setErr] = useState({ name: null, trackingNum: null, shippingProvider: null });
     let [error, setError] = useState(null);
 
     const [open, setOpen] = useState(false);
-    const [shipperValue, setShipperValue] = useState(null);
+    const [shippingProvider, setshippingProvider] = useState(null);
     const [items, setItems] = useState([
         { label: 'Fedex', value: 'Fedex' },
         { label: 'Usps', value: 'usps' },
@@ -60,9 +60,9 @@ function AddTracking({ route, navigation }) {
             error["trackingNum"] = "Name must be minimum 5 characters";
             setErr({ ...error });
             return false;
-        } if (shipperValue == null) {
+        } if (shippingProvider == null) {
             let error = { ...err };
-            error["shipperValue"] = "select one shipping provider";
+            error["shippingProvider"] = "select one shipping provider";
             setErr({ ...error });
             return false;
         } else {
@@ -72,20 +72,20 @@ function AddTracking({ route, navigation }) {
 
     const save = () => {
 
-        if (err.name == null && err.trackingNum == null && err.shipperValue == null && state.name != null && state.trackingNum != null && shipperValue != null) {
+        if (err.name == null && err.trackingNum == null && err.shippingProvider == null && state.name != null && state.trackingNum != null && shippingProvider != null) {
             if (isValid()) {
                  //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
-                 const uri=`${process.env.ROUTE}/addShippment`;
+                 const uri=`http://localhost:3000/ship/addTracking`;
                 //const uri = 'https://shipping-backend.vercel.app/addShippment';
                 // uri = 'https://shippingbackend.herokuapp.com/addShippment';
-                console.log({ ...state, shipper: shipperValue })
+                console.log({ ...state, shippingProvider: shippingProvider })
                 console.log({
                     headers: {
                         "authorization": "Bearer " + route.params.token,
                         "content-type": "application/json"
                     }
                 })
-                axios.post(uri, { ...state, shipper: shipperValue }, {
+                axios.post(uri, { ...state, shippingProvider: shippingProvider }, {
                     headers: {
                         "authorization": "Bearer " + route.params.token,
                         "content-type": "application/json"
@@ -154,14 +154,14 @@ function AddTracking({ route, navigation }) {
                             zIndex={3000}
                             zIndexInverse={1000}
                             open={open}
-                            value={shipperValue}
+                            value={shippingProvider}
                             items={items}
                             setOpen={setOpen}
-                            setValue={setShipperValue}
+                            setValue={setshippingProvider}
                             setItems={setItems}
                             placeholder={"Select Shipping Provider"}
                         />
-                        {err.shipperValue != null && <Text style={styles.err}>Select one Shipping value</Text>}
+                        {err.shippingProvider != null && <Text style={styles.err}>Select one Shipping value</Text>}
                         <SafeAreaView style={{ flexDirection: "row", marginBottom: 3 ,justifyContent:"center"}}>
                             <View style={{ flex: 1, }} >
                                 <Pressable style={styles.save} onPress={save}>

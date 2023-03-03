@@ -20,11 +20,8 @@ function Details(props) {
   const [error, setError] = useState(null)
   const callShowMoreDetails = useCallback((tNum) => {
     console.log("Start Tracking API calling")
-    const uri=`${process.env.ROUTE}/tracking`
-    //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8000/tracking`;
-    //const uri='https://shipping-backend.vercel.app/tracking';
-
-     //uri='https://shippingbackend.herokuapp.com/tracking';
+    //const uri=`${process.env.ROUTE}/tracking`
+    const uri=`http://localhost:3000/ship/trackingMoreDetails`;
     console.log({
       "id":props.id,
       "shipper": props.shipper,
@@ -110,7 +107,10 @@ function Details(props) {
             <Text style={{ paddingLeft: 5, flex: 0, textAlign: "left" }}>Status_details: {state.tracking_status.status_details},</Text>
             <Text style={{ paddingLeft: 5, flex: 0, textAlign: "left" }}>Status_message: {state.tracking_status.substatus.text}</Text>
           </View>
-          <View style={styles.flexChild1} >
+          
+        </View>
+        <View style={styles.flexContainer} >
+        <View style={styles.flexChild1} >
             <Text style={{ fontWeight: "bold", fontSize: 14 }}>Current Location:</Text>
             <SafeAreaView style={{ dispaly: "flex", flexDirection: "column" }}>
               <Text style={{ paddingLeft: 5, flex: 0, textAlign: "left" }} >City:{state.tracking_status.location.city}</Text>
@@ -119,7 +119,7 @@ function Details(props) {
               <Text style={{ paddingLeft: 5, flex: 0, textAlign: "left" }}  >Country:{state.tracking_status.location.country}</Text>
             </SafeAreaView>
           </View>
-        </View>
+          </View>
       </SafeAreaView>
     </View>
     }
@@ -138,7 +138,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignContent: "stretch",
     alignItems: "flex-start",
-    borderWidth: 2
+    borderWidth: 2,
+    marginBottom:2,
+    borderRadius:5
   },
 
   flexChild1: {

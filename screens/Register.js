@@ -1,6 +1,6 @@
 import React, { useState, useEffect, isValidElement } from 'react'
-import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback,Button, View, TextInput, Pressable, Image } from 'react-native';
-import {  Input } from "react-native-elements";
+import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback, Button, View, TextInput, Pressable, Image } from 'react-native';
+import { Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -16,11 +16,11 @@ const { manifest } = Constants;
 function Register({ route, navigation }) {
     let [state, setState] = useState({
         firstName: null, lastName: null,
-        email: '', password: ''
+        email: '', password: '', phone: ''
     });
     const [message, setMessage] = useState(null);
 
-    let [err, setErr] = useState({ firstName: null, lastName: null, email: null, password: null });
+    let [err, setErr] = useState({ firstName: null, lastName: null, email: null, password: null, phone: null });
     let [error, setError] = useState(null);
 
     const handleChange = (text, param) => {
@@ -70,18 +70,24 @@ function Register({ route, navigation }) {
             return false;
         }
 
+        if (state.phone.length != 10) {
+            setError('phonenumber must be 10 characters');
+            return false;
+        }
+
+
         return true;
     }
     const register = () => {
         console.log("first")
-        if (err.firstName == null && err.lastName == null && err.email == null && err.password == null
-            && state.firstName != null && state.lastName != null && state.email != null && state.password != null) {
+        if (err.firstName == null && err.lastName == null && err.email == null && err.password == null && err.phone == null
+            && state.firstName != null && state.lastName != null && state.email != null && state.password != null && state.phone != null) {
 
             if (isValid()) {
 
                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/register`;
-                const uri = `${process.env.ROUTE}/register`
-                //let uri='https://shipping-backend.vercel.app/register';
+                //const uri = `${process.env.ROUTE}/register`
+                let uri = 'http://localhost:3000/register';
                 //uri='https://shippingbackend.herokuapp.com/register';
                 console.log(uri)
                 console.log({ ...state })
@@ -151,7 +157,7 @@ function Register({ route, navigation }) {
                         margin: 12,
                         borderWidth: 1,
                         padding: 10,
-                        borderRadius:12
+                        borderRadius: 12
                     }}
                     value={state.firstName}
                     onChangeText={newText => handleChange(newText, "firstName")}
@@ -165,7 +171,7 @@ function Register({ route, navigation }) {
                         margin: 12,
                         borderWidth: 1,
                         padding: 10,
-                        borderRadius:12
+                        borderRadius: 12
                     }}
                     value={state.lastName}
                     onChangeText={newText => handleChange(newText, "lastName")}
@@ -179,7 +185,22 @@ function Register({ route, navigation }) {
                         margin: 12,
                         borderWidth: 1,
                         padding: 10,
-                        borderRadius:12
+                        borderRadius: 12
+                    }}
+                    value={state.phone}
+                    onChangeText={newText => handleChange(newText, "phone")}
+                    placeholder="Enter PhoneNumber"
+                    secureTextEntry={true}
+                />
+                {err.phone != null && <Text style={styles.err}>Enter valid Phone Number</Text>}
+                <TextInput
+                    type="text"
+                    style={{
+                        height: 40,
+                        margin: 12,
+                        borderWidth: 1,
+                        padding: 10,
+                        borderRadius: 12
                     }}
                     value={state.email}
                     onChangeText={newText => handleChange(newText, "email")}
@@ -193,7 +214,7 @@ function Register({ route, navigation }) {
                         margin: 12,
                         borderWidth: 1,
                         padding: 10,
-                        borderRadius:12
+                        borderRadius: 12
                     }}
                     value={state.password}
                     onChangeText={newText => handleChange(newText, "password")}
@@ -201,8 +222,10 @@ function Register({ route, navigation }) {
                     secureTextEntry={true}
                 />
                 {err.password != null && <Text style={styles.err}>Enter password</Text>}
-                <View style={{ marginVertical: 2,flexDirection: 'row',
-                    justifyContent: 'center' }}>
+                <View style={{
+                    marginVertical: 2, flexDirection: 'row',
+                    justifyContent: 'center'
+                }}>
                     <Pressable style={styles.button21} onPress={register}>
                         <Text style={styles.buttonText}>Regsiter</Text>
                     </Pressable>
@@ -293,8 +316,8 @@ const styles = StyleSheet.create({
         color: 'black',
         paddingLeft: 10,
         paddingRight: 10,
-        borderWidth:1,
-        borderRadius:20
+        borderWidth: 1,
+        borderRadius: 20
     },
 
     textResult: {
@@ -308,7 +331,7 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     container2: {
-        marginTop:10,
+        marginTop: 10,
         flexDirection: "column"
     }
 });

@@ -36,20 +36,6 @@ function Home({ route, navigation }) {
 
     const [refreshInterval, setRefreshInterval] = useState(0);
 
-
-    // useEffect(() => {
-    //     console.log("Notif")
-    //     console.log(route.params?.uId)
-    //     async function fetchData() {
-    //         if(route.params?.uId!=null){
-    //             let notifications = await getIndieNotificationInbox(route.params?.uId, 2988, 'KVpPJHcdkZMXyaAsAvsmhz');
-    //             console.log("notifications: ", notifications);
-    //             //setData(notifications);
-    //         }
-    //     }
-    //     fetchData();
-    // });
-    //navigation
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -82,16 +68,13 @@ function Home({ route, navigation }) {
     });
 
 
-
     const execute = () => {
         // console.log(route.params)
         if (route.params?.token != null) {
             setIsLogin(true)
             console.log("Home API Callback")
             console.log("calling getshipments")
-            //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/getShipments`;
-            const uri = `${process.env.ROUTE}/getShipments`
-            //const uri='https://shipping-backend.vercel.app/getShipments';
+            const uri = `http://localhost:3000/ship/getTracking`
             console.log({
                 "authorization": "Bearer " + route.params?.token,
                 "content-type": "application/json"
@@ -155,13 +138,6 @@ function Home({ route, navigation }) {
     }
 
     const toggleForm = (val) => {
-        /*  setViewForm(!viewForm)
-          if (btnTxt == "Add Shippment") {
-              setBtnTxt("Hide Form");
-          } else {
-              setBtnTxt("Add Shippment");
-          }
-         */
         navigation.navigate('AddTracking', {
             isLogin: "True",
             token: route.params.token,

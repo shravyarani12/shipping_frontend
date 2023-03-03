@@ -45,18 +45,8 @@ function PendingList(props) {
     const deleteEntry = (val) => {
 
           //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
-          const uri=`${process.env.ROUTE}/deleteShipments`;
-          //const uri = 'https://shipping-backend.vercel.app/addShippment';
-          // uri = 'https://shippingbackend.herokuapp.com/addShippment';
-          console.log({
-              headers: {
-                  "authorization": "Bearer " + props.token,
-                  "content-type": "application/json"
-              }
-          })
-          console.log("Delete")
-          console.log( { id:val })
-          axios.post(uri, { id:val }, {
+          const uri=`http://localhost:3000/ship/deleteTracking`;
+          axios.post(uri, { trackingId:val }, {
               headers: {
                   "authorization": "Bearer " + props.token,
                   "content-type": "application/json"
@@ -69,11 +59,6 @@ function PendingList(props) {
                 setTimeout(()=>{
                     props.refresh();
                 },500)
-                
-                //   props.navigation.navigate('Home', {
-                //       isLogin: "True",
-                //       token: props.token
-                //   })
               }else {
                   console.log(res)
                   setDeleteError("True");    
@@ -90,30 +75,6 @@ function PendingList(props) {
     return (
         <View key={props.index}>
             <SafeAreaView style={{ marginTop: 5, borderBottomWidth: 1 }} key={props.index}>
-                {/* <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
-                    <SafeAreaView style={{ flexDirection: "row", backgroundColor: "#ABD3D5", marginBottom: 2, marginTop: 2 }} >
-                        <View style={{ paddingLeft: 10}} >
-
-                            <TouchableWithoutFeedback onPress={() => toggleMore(true)}   >
-                                <Image
-                                    style={{ paddingLeft: 30,width: 25, height: 25, borderRadius: 50, borderWidth: 0 }}
-                                    source={showMore == true ? ICONS["close"] : ICONS["open"]}
-                                />
-                            </TouchableWithoutFeedback>
-                        </View>
-                        <View>
-                            <Text style={styles.textResult1}>{`Item Name:` + props.item.name}</Text>
-                        </View>
-                        <TouchableWithoutFeedback onPress={() => toggleMore(true)}   >
-                                <Image
-                                    style={{ paddingLeft: 30,width: 25, height: 25, borderRadius: 50, borderWidth: 0 , alignContent:"right"}}
-                                    source={showMore == true ? ICONS["close"] : ICONS["open"]}
-                                />
-                            </TouchableWithoutFeedback>
-                    </SafeAreaView> */}
-
-
-
                 <SafeAreaView style={{ display: "flex", flexDirection: "row",justifyContent: "space-between", width: "100%", backgroundColor: "#ABD3D5", marginBottom: 2, marginTop: 2 }} >
                     <View style={{ paddingLeft: 10, float: "left" }} >
 
@@ -128,7 +89,7 @@ function PendingList(props) {
                         <Text style={styles.textResult1}>{`Item Name:` + props.item.name}</Text>
                     </View>
                     <View style={{ "marginLeft": "auto",paddingRight: 10  }}>
-                        <TouchableWithoutFeedback onPress={() => deleteEntry(props.item.id)}   >
+                        <TouchableWithoutFeedback onPress={() => deleteEntry(props.item.trackingId)}   >
                             <View style={{display: "flex", flexDirection: "row", alignItems: "stretch",backgroundColor:"red",borderRadius:70}}>
                             <Image
                                 style={{ paddingLeft: 30, width: 35, height: 35  }}
@@ -142,7 +103,7 @@ function PendingList(props) {
 
                 {showMore == true && <SafeAreaView style={{ marginTop: 10, borderWidth: 1 }} key={props.index}>
                     <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
-                        <Text style={styles.textResult}>{`Shipping Provider: ` + props.item.shipper}</Text>
+                        <Text style={styles.textResult}>{`Shipping Provider: ` + props.item.shippingProvider}</Text>
                     </SafeAreaView>
                     <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
                         <Text style={styles.textResult}>{`Tracking Numnber: ` + props.item.trackingNum}</Text>
@@ -153,11 +114,11 @@ function PendingList(props) {
                         </Pressable>
                     </SafeAreaView>
                     <SafeAreaView style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                        <Text style={{ fontSize: 12 }}>{`Date Added:` + props.item.dateAdded.split("(")[0]}</Text>
+                        <Text style={{ fontSize: 12 }}>{`Date Added:` + props.item.createdDateTime.split("(")[0]}</Text>
                     </SafeAreaView>
 
                     {expandMore && <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
-                        <Details tNum={props.item.trackingNum} token={props.token} shipper={props.item.shipper} id={props.item.id} navigation={props.navigation}/>
+                        <Details tNum={props.item.trackingNum} token={props.token} shipper={props.item.shippingProvider} id={props.item.trackingId} navigation={props.navigation}/>
                     </SafeAreaView>
                     }
                 </SafeAreaView>}

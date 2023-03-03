@@ -13,9 +13,9 @@ import registerNNPushToken from 'native-notify';
 import Constants from "expo-constants";
 const { manifest } = Constants;
 
-//process.env.ROUTE=`http://${manifest.debuggerHost.split(':').shift()}:8080`;
 //process.env.ROUTE = 'https://shipping-backend.vercel.app';
-process.env.ROUTE = 'https://shippingbackend.herokuapp.com';
+//process.env.ROUTE = 'https://shippingbackend.herokuapp.com';
+process.env.ROUTE = 'http://localhost:3000';
 export default function App() {
   //registerNNPushToken(2988, 'KVpPJHcdkZMXyaAsAvsmhz');
   
