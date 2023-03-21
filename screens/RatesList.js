@@ -68,8 +68,10 @@ export default function RatesList(props) {
             }).then(res => {
                 console.log("Rates Object")
                 if (res.status == 200) {
-                    console.log(res.data)
-                    setLabelDetails({ ...res.data.transaction })
+                    console.log("transaction label")
+                    console.log(res.data.transaction)
+
+                    setLabelDetails({ ...res.data.transaction, price:item.amount })
                     if (res.data.transaction.object_state = "VALID" && res.data.transaction.status != "ERROR") {
                         const uri = `https://www.shravyarani.com/ship/addTracking`;
                         console.log({ name: props.name, trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider })
@@ -261,7 +263,7 @@ export default function RatesList(props) {
 
             }
 
-            {paymentFormVisible && <PaymentForm setModalVisible={setModalVisible} setPaymentFailed={setPaymentFailed}  setPaymentFormVisible={setPaymentFormVisible}/>}
+            {paymentFormVisible && <PaymentForm setModalVisible={setModalVisible} setPaymentFailed={setPaymentFailed}  labelDetails={labelDetails} setPaymentFormVisible={setPaymentFormVisible}/>}
 
             <Modal isVisible={isModalVisible} style={{ maxHeight: 300, borderRadius: 20 }}>
                 <View style={{ flex: 1, backgroundColor: "white", paddingTop: 50, paddingRight: 15, paddingLeft: 15, height: 50, border: 15, borderRadius: 15 }}>
@@ -294,8 +296,6 @@ export default function RatesList(props) {
                                     <Text style={{ textAlign: "center", fontSize: 14, color: "red", fontStyle: "italic", }}>Enter Valid Email</Text>
                                 </VStack>
                             } 
-
-
 
                             {paymentFailed &&
                                 <VStack spacing={1}>

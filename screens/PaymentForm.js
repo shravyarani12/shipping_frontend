@@ -25,7 +25,7 @@ export default function PaymentForm(props) {
         setCardDetails(cardDetails);
     };
 
-    const handlePayPress = async (cardNumber,expMonth,expYear,cvv) => {
+    const handlePayPress = async (cardNumber,expMonth,expYear,cvc) => {
         setLoading(true);
         try {
             const stripe = axios.create({
@@ -62,8 +62,10 @@ export default function PaymentForm(props) {
                           'Content-Type': 'application/x-www-form-urlencoded'
                         }
                       });
-                      
-                      const amount = 2000; // $20.00
+                      let amount=props.labelDetails.price.split(".")
+                      let penny=amount[1].split('')
+                      amount=amount[0]+(penny.lenght>0&&penny[0])+(penny.length>1&& penny[1])
+                      amount =parseFloat(amount)*100
                       const currency = 'usd';
                       const payment_method  = `${tokenId}`; // Replace with the actual token ID
                       const card={
@@ -83,6 +85,7 @@ export default function PaymentForm(props) {
                       const charge = await stripe.post('/v1/charges', data);
 
                       props.setModalVisible(true);
+                   
                       props.setPaymentFailed(false);
 
 
@@ -113,13 +116,14 @@ export default function PaymentForm(props) {
         setExpMonth();
         setExpYear();
         setCvc();
+        console.log(cardData)
         submit && handlePayPress(cardData.cardNumber,cardData.month,cardData.year,cardData.cvc);
     }
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Enter payment details</Text>
             <View style={styles.cardFieldContainer}>
-                <CreditCardForm setCardData={setCardData} setPaymentFormVisible={props.setPaymentFormVisible} />
+                <CreditCardForm setCardData={setCardData} setPaymentFormVisible={props.setPaymentFormVisible}/>
                 {/* <View>
                     <TextInput
                         placeholder="Card number"

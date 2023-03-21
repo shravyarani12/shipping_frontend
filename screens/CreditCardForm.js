@@ -18,12 +18,6 @@ const CreditCardForm = (props) => {
         const expirationParts = expirationMM.split('/');
         const month = parseInt(expirationParts[0]);
         const year = parseInt(expirationParts[1]);
-
-        console.log(validCardNumber)
-        console.log(validCvc)
-        console.log(validExpiration)
-        console.log(month)
-        console.log(year)
         const now = new Date();
         const currentYear = now.getFullYear() % 100;
         const currentMonth = now.getMonth() + 1;
