@@ -86,7 +86,7 @@ function AddTracking({ route, navigation }) {
         if (err.name == null && err.trackingNum == null && err.shippingProvider == null && state.name.length > 0 && state.trackingNum.length > 0 && shippingProvider != null) {
             if (isValid()) {
                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
-                const uri = `https://cis693-backend.vercel.app/ship/addTracking`;
+                const uri = `https://www.shravyarani.com/ship/addTracking`;
                 //const uri = 'https://shipping-backend.vercel.app/addShippment';
                 // uri = 'https://shippingbackend.herokuapp.com/addShippment';
                 console.log({ ...state, shippingProvider: shippingProvider })

@@ -79,7 +79,7 @@ function Home({ route, navigation }) {
             setIsLogin(true)
             console.log("Home API Callback")
             console.log("calling getshipments")
-            const uri = `https://cis693-backend.vercel.app/ship/getTracking`
+            const uri = `https://www.shravyarani.com/ship/getTracking`
             console.log({
                 "authorization": "Bearer " + route.params?.token,
                 "content-type": "application/json"

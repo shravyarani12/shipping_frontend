@@ -377,7 +377,7 @@ function ShipmentLabel({ route, navigation }) {
             let errObj = dir == "to" ? toerr : fromerr;
             if (Object.keys(errObj).filter(item => toerr[item]).length == 0) {
                 if (isAddressValid(dir)) {
-                    const uri = `https://cis693-backend.vercel.app/ship/addAddress`;
+                    const uri = `https://www.shravyarani.com/ship/addAddress`;
                     axios.post(uri, { ...address, savedb: savedb }, {
                         headers: {
                             "authorization": "Bearer " + route.params.token,
@@ -430,7 +430,7 @@ function ShipmentLabel({ route, navigation }) {
         return new Promise((resolve, reject) => {
             if (Object.keys(parcelerr).filter(item => toerr[item]).length == 0) {
                 if (isParcelValid()) {
-                    const uri = `https://cis693-backend.vercel.app/ship/addParcel`;
+                    const uri = `https://www.shravyarani.com/ship/addParcel`;
                     axios.post(uri, { ...parcel, savedb: savedb }, {
                         headers: {
                             "authorization": "Bearer " + route.params.token,
@@ -483,7 +483,7 @@ function ShipmentLabel({ route, navigation }) {
             console.log((values))
             try {
                 if (Object.keys(apiErr).filter(item => toerr[item]).length == 0) {
-                    const uri = `https://cis693-backend.vercel.app/ship/createShipment`;
+                    const uri = `https://www.shravyarani.com/ship/createShipment`;
                     axios.post(uri, { addressTo: values[0].addressId, addressFrom: values[1].addressId, parcels: values[2].parcelId, name: toAddress.name + "-" + fromAddress.name + "-" + parcel.name }, {
                         headers: {
                             "authorization": "Bearer " + route.params.token,
@@ -493,7 +493,7 @@ function ShipmentLabel({ route, navigation }) {
                         console.log("New Shipment Created")
                         if (res.status == 200) {
                             console.log(res.data)
-                            const uri = `https://cis693-backend.vercel.app/ship/getRates?shipmentId=` + res.data.shipmentId;
+                            const uri = `https://www.shravyarani.com/ship/getRates?shipmentId=` + res.data.shipmentId;
 
                             axios.get(uri, {
                                 headers: {

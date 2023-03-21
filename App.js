@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native"
@@ -17,7 +18,7 @@ const { manifest } = Constants;
 
 //process.env.ROUTE = 'https://shipping-backend.vercel.app';
 //process.env.ROUTE = 'https://shippingbackend.herokuapp.com';
-process.env.ROUTE = 'https://cis693-backend.vercel.app';
+process.env.ROUTE = 'https://www.shravyarani.com';
 export default function App() {
   //registerNNPushToken(2988, 'KVpPJHcdkZMXyaAsAvsmhz');
 

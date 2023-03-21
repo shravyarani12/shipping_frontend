@@ -43,7 +43,7 @@ export default function RatesList(props) {
         setIsLoading(true);
         setApiErr("true");
         return new Promise((resolve, reject) => {
-            const uri = `https://cis693-backend.vercel.app/ship/createShipmentLabel`;
+            const uri = `https://www.shravyarani.com/ship/createShipmentLabel`;
             console.log(item)
             axios.post(uri, { rateId: item.object_id }, {
                 headers: {
@@ -56,7 +56,7 @@ export default function RatesList(props) {
                     console.log(res.data)
                     setLabelDetails({ ...res.data.transaction })
                     if (res.data.transaction.object_state != "INVALID") {
-                        const uri = `https://cis693-backend.vercel.app/ship/addTracking`;
+                        const uri = `https://www.shravyarani.com/ship/addTracking`;
                         console.log({ name: props.name, trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider })
                         axios.post(uri, { name: props.name.split("-")[0], trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider }, {
                             headers: {
@@ -120,7 +120,7 @@ export default function RatesList(props) {
             setIsLoading(true);
             setApiErr("true");
             return new Promise((resolve, reject) => {
-                const uri = `https://cis693-backend.vercel.app/ship/sendEmail`;
+                const uri = `https://www.shravyarani.com/ship/sendEmail`;
                 console.log(item)
                 axios.post(uri, { ...labelDetails, email: email, name: props.name }, {
                     headers: {
