@@ -45,7 +45,7 @@ function PendingList(props) {
     const deleteEntry = (val) => {
 
           //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
-          const uri=`http://localhost:3000/ship/deleteTracking`;
+          const uri=`https://cis693-backend.vercel.app/ship/deleteTracking`;
           axios.post(uri, { trackingId:val }, {
               headers: {
                   "authorization": "Bearer " + props.token,

@@ -7,6 +7,8 @@ import Register from "./screens/Register";
 import Details from "./screens/Details";
 import Login from "./screens/Login";
 import AddTracking from './screens/AddTracking';
+import ShipmentLabel from './screens/ShipmentLabel';
+import RatesList from './screens/RatesList';
 import NewTracking from "./screens/NewTracking";
 import registerNNPushToken from 'native-notify';
 
@@ -15,10 +17,10 @@ const { manifest } = Constants;
 
 //process.env.ROUTE = 'https://shipping-backend.vercel.app';
 //process.env.ROUTE = 'https://shippingbackend.herokuapp.com';
-process.env.ROUTE = 'http://localhost:3000';
+process.env.ROUTE = 'https://cis693-backend.vercel.app';
 export default function App() {
   //registerNNPushToken(2988, 'KVpPJHcdkZMXyaAsAvsmhz');
-  
+
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
@@ -77,7 +79,31 @@ export default function App() {
             fontWeight: 'bold',
           },
         }}></Stack.Screen>
+
+        <Stack.Screen name="ShipmentLabel" component={ShipmentLabel} options={{
+          title: 'ShipmentLabel',
+          headerStyle: {
+            backgroundColor: '#0032a0',
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}></Stack.Screen>
+
+        <Stack.Screen name="RatesList" component={RatesList} options={{
+          title: 'RatesList',
+          headerStyle: {
+            backgroundColor: '#0032a0',
+          },
+          headerTintColor: 'white',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}></Stack.Screen>
       </Stack.Navigator>
+
+
     </NavigationContainer>
   );
 }

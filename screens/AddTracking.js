@@ -10,14 +10,18 @@ import { random } from 'lodash';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid'
 
-
+import { VStack,Stack, TextInput, IconButton } from "@react-native-material/core";
+import DropShipper from './DropShipper';
+import FontAwesome5 from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import TxtInput from './TxtInput';
 const ICONS = {
     open: require('../assets/open.jpg'),
     close: require('../assets/close.jpg'),
 
 };
 function AddTracking({ route, navigation }) {
-    const [state, setState] = useState({ name: null, trackingNum: null });
+    const [state, setState] = useState({ name: "", trackingNum: "" });
     let [err, setErr] = useState({ name: null, trackingNum: null, shippingProvider: null });
     let [error, setError] = useState(null);
 
@@ -31,24 +35,29 @@ function AddTracking({ route, navigation }) {
 
 
     const clear = () => {
-        setState({ name: null, trackingNum: null });
+        setState({ name: "", trackingNum: "" });
         setErr({ name: null, trackingNum: null });
+        handleDropShipper(null)
         setError(null);
     }
     const handleChange = (text, param) => {
-        let error = { ...err };
+        // let error = { ...err };
+        setError(null);
         let currentState = { ...state }
         // const floatRegExp = new RegExp('^[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)$')
-        if (text.length != 0) {
-            error[param] = null;
-        } else {
-            error[param] = "Enter correct Value";
-        }
+        // if (text.length != 0) {
+        //     error[param] = null;
+        // } else {
+        //     error[param] = "Enter correct Value";
+        // }
         currentState[param] = text;
-        setErr({ ...error });
+        // setErr({ ...error });
         setState({ ...currentState });
     }
 
+    const handleDropShipper = (value) => {
+        setshippingProvider(value)
+    }
     const isValid = () => {
         if (state.name.length < 3) {
             let error = { ...err };
@@ -71,11 +80,13 @@ function AddTracking({ route, navigation }) {
     }
 
     const save = () => {
-
-        if (err.name == null && err.trackingNum == null && err.shippingProvider == null && state.name != null && state.trackingNum != null && shippingProvider != null) {
+        console.log(err)
+        console.log(state)
+        console.log(shippingProvider)
+        if (err.name == null && err.trackingNum == null && err.shippingProvider == null && state.name.length > 0 && state.trackingNum.length > 0 && shippingProvider != null) {
             if (isValid()) {
-                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
-                 const uri=`http://localhost:3000/ship/addTracking`;
+                //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
+                const uri = `https://cis693-backend.vercel.app/ship/addTracking`;
                 //const uri = 'https://shipping-backend.vercel.app/addShippment';
                 // uri = 'https://shippingbackend.herokuapp.com/addShippment';
                 console.log({ ...state, shippingProvider: shippingProvider })
@@ -124,6 +135,9 @@ function AddTracking({ route, navigation }) {
             } else {
                 console.log("Invalid shipment details")
             }
+        } else {
+            console.log("Not Valid Details ")
+            setError("Invalid Shipping Details")
         }
     }
 
@@ -132,37 +146,29 @@ function AddTracking({ route, navigation }) {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.container1} >
                     <SafeAreaView style={styles.container2}>
-                        <Input
-                            type="text"
-                            style={styles.input}
-                            value={state.name}
-                            onChangeText={newText => handleChange(newText, "name")}
-                            placeholder="Enter Item Name"
-                        />
-                        {err.name != null && <Text style={styles.err}>Enter Item Name</Text>}
-                        <Input
-                            type="text"
-                            style={styles.input}
-                            value={state.trackingNum}
-                            onChangeText={newText => handleChange(newText, "trackingNum")}
-                            placeholder="Enter Tracking Number"
-                        />
-                        <Text style={{ fontSize: 10, paddingBottom: 10, paddingLeft: 10 }}>Enter tracking number starting as FF_ to test notification (Ex: FF_1234)</Text>
-                        {err.trackingNum != null && <Text style={styles.err}>Enter tracking number</Text>}
+                        <VStack spacing={20} m={12} divider={true}>
+                            <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
+                                <Text style={{ fontSize: 24, textAlign: "center", fontFamily: "ui-sans-serif", textDecoration: "underline", paddingBottom: 5, marginTop: 15, borderRadius: 5,  borderColor: "black" }}>Add Tracking Information</Text>
+                            </Stack>
+                            {error && <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
+                                <Text style={{ fontSize: 14, textAlign: "center", fontFamily: "ui-sans-serif", color: "red", paddingBottom: 15, marginTop: 20, borderRadius: 5, border: 20, borderColor: "black" }}>Invalid Tracking Details</Text>
+                            </Stack>}
+                            <TxtInput handleChange={handleChange} state={state} stateKey={"name"} label={"Enter Item Name*"} />
+                            {err.name != null && <Text style={styles.err}>Enter Item Name*</Text>}
 
-                        <DropDownPicker style={styles.drop}
-                            zIndex={3000}
-                            zIndexInverse={1000}
-                            open={open}
-                            value={shippingProvider}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setshippingProvider}
-                            setItems={setItems}
-                            placeholder={"Select Shipping Provider"}
-                        />
-                        {err.shippingProvider != null && <Text style={styles.err}>Select one Shipping value</Text>}
-                        <SafeAreaView style={{ flexDirection: "row", marginBottom: 3 ,justifyContent:"center"}}>
+
+
+                            <TxtInput handleChange={handleChange} state={state} stateKey={"trackingNum"} label={"Enter Tracking Number*"} />
+                            {/* <Text style={{ fontSize: 10, paddingBottom: 10, paddingLeft: 10 }}>Enter tracking number starting as FF_ to test notification (Ex: FF_1234)</Text> */}
+                            {err.trackingNum != null && <Text style={styles.err}>Enter tracking number</Text>}
+   
+                            <SafeAreaView style={{ backgroundColor: "#fff", border: "5px", borderColor: "black" }}>
+                                <DropShipper handleDropShipper={handleDropShipper} value={shippingProvider}/>
+                            </SafeAreaView>
+                            {err.shippingProvider != null && <Text style={styles.err}>Select one Shipping value</Text>}
+                        </VStack>
+                        
+                        <SafeAreaView style={{ flexDirection: "row", marginBottom: 3,marginTop:10, justifyContent: "center" }}>
                             <View style={{ flex: 1, }} >
                                 <Pressable style={styles.save} onPress={save}>
                                     <Text style={styles.buttonText}>Save</Text>
@@ -185,6 +191,19 @@ export default AddTracking
 
 
 const styles = StyleSheet.create({
+
+    inputContainer: {
+        justifyContent: 'center',
+    },
+    input: {
+        height: 50,
+    },
+    icon: {
+        position: 'absolute',
+        right: 10,
+    },
+
+
     drop: {
         borderRadius: 0,
         borderTopColor: "white",
@@ -197,16 +216,16 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         letterSpacing: 0.25,
         color: 'white',
-        borderRadius:20
+        borderRadius: 20
     },
-    input: {
-        height: 5,
-        margin: 0,
-        borderBottomWidth: 0,
-        padding: 0,
-        fontSize: 15,
-        flex: 1
-    },
+    // input: {
+    //     height: 5,
+    //     margin: 0,
+    //     borderBottomWidth: 0,
+    //     padding: 0,
+    //     fontSize: 15,
+    //     flex: 1
+    // },
     button: {
         marginTop: 5,
         marginBottom: 5,
@@ -221,7 +240,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginLeft: 15,
         marginRight: 15,
-        width:150,
+        width: 150,
         fontSize: 8,
         alignItems: 'center',
         justifyContent: 'center',
@@ -236,7 +255,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         fontSize: 8,
-        width:150,
+        width: 150,
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 12,
@@ -263,8 +282,8 @@ const styles = StyleSheet.create({
         color: 'black',
         paddingLeft: 10,
         paddingRight: 10,
-        borderWidth:1,
-        borderRadius:20
+        borderWidth: 1,
+        borderRadius: 20
     },
 
     textResult: {

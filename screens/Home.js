@@ -14,7 +14,7 @@ import axios from "axios";
 import { child } from 'firebase/database';
 import { getIndieNotificationInbox } from 'native-notify';
 
-
+import { useIsFocused  } from "@react-navigation/native"
 const ICONS = {
     open: require('../assets/open.jpg'),
     close: require('../assets/close.jpg'),
@@ -27,7 +27,9 @@ function Home({ route, navigation }) {
     const [refresh, setRefresh] = useState(true);
     const [deliveredItemsList, setDeliveredItemsList] = useState([]);
     const [viewForm, setViewForm] = useState(false);
+    const [viewForm1, setViewForm1] = useState(false);
     const [btnTxt, setBtnTxt] = useState("Add Tracking");
+    const [btnTxt1, setBtnTxt1] = useState("Create Shipment Label");
     const [showPendingMore, setShowPendingMore] = useState([]);
     const [deleteMessage, setDeleteMessage] = useState(null)
 
@@ -35,6 +37,9 @@ function Home({ route, navigation }) {
     const isMounted = useRef(false);
 
     const [refreshInterval, setRefreshInterval] = useState(0);
+
+    const isFocused = useIsFocused();
+
 
     useEffect(() => {
         navigation.setOptions({
@@ -74,7 +79,7 @@ function Home({ route, navigation }) {
             setIsLogin(true)
             console.log("Home API Callback")
             console.log("calling getshipments")
-            const uri = `http://localhost:3000/ship/getTracking`
+            const uri = `https://cis693-backend.vercel.app/ship/getTracking`
             console.log({
                 "authorization": "Bearer " + route.params?.token,
                 "content-type": "application/json"
@@ -114,22 +119,32 @@ function Home({ route, navigation }) {
 
 
     useEffect(() => {
+        // //Brute Login 
+        // route.params={}
+        // route.params.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MTQsIm5hbWUiOiJzaHJhdnlhIGRhbWFyYXBlbGxpIn0sImlhdCI6MTY3OTI4MDQ2OCwiZXhwIjoxNjc5MzA1NjY4fQ.r3o7MfnMwDrAxW4rGQclphioaahUrsO1kcSaOkqTY94';
+        // //Brute Login 
+        
         if (route.params?.token == null) {
             navigation.navigate('Login', {
             })
         }
+        return(()=>{
+            setRefresh(!refresh);
+        })
     }, [])
 
     // Do something else with the data
     useEffect(() => {
-        console.log("sec use")
         if (isMounted.current) {
-            console.log("sec use mount")
             execute()
         } else {
             isMounted.current = true;
         }
     }, [route.params?.isLogin, route.params?.added, refresh]);
+
+    useEffect(() => {
+        isFocused && execute()
+      },[isFocused]);
 
 
     const toggleRefresh = (val) => {
@@ -144,6 +159,15 @@ function Home({ route, navigation }) {
             userId: route.params?.userId,
         })
     }
+
+    const toggleShipmentLabelForm = (val) => {
+        navigation.navigate('ShipmentLabel', {
+            isLogin: "True",
+            token: route.params.token,
+            userId: route.params?.userId,
+        })
+    }
+
 
     const toggleMore = (val) => {
         console.log("toggleMore")
@@ -165,11 +189,19 @@ function Home({ route, navigation }) {
                         <Text style={styles.buttonText}>{btnTxt}</Text>
                     </Pressable>
                 </View>
+
+                <View style={{ marginLeft: "0%" }}>
+                    <Pressable style={styles.button2} onPress={() => toggleShipmentLabelForm(true)}>
+                        <Text style={styles.buttonText}>{btnTxt1}</Text>
+                    </Pressable>
+                </View>
+
+
                 {deleteMessage && <Text>Deleted Succesfully</Text>}
                 {/* <Pressable style={styles.button2} onPress={()=>toggleRefresh()}>
                                 <Text style={styles.buttonText}>Refresh</Text>
                             </Pressable> */}
-                {viewForm && <NewTracking userId={route.params?.userId} token={route.params?.token} showForm={toggleForm} navigation={navigation} />}
+                {/* {viewForm && <NewTracking userId={route.params?.userId} token={route.params?.token} showForm={toggleForm} navigation={navigation} />} */}
                 <Text style={{ fontSize: 16, paddingLeft: 20, paddingTop: 10, paddingBottom: 10, marginTop: 20, backgroundColor: "lightgreen" }}>Pending shipments</Text>
                 {/*  <FlatList nestedScrollEnabled
                     keyExtractor={(item) => item.id}

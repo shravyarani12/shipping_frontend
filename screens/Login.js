@@ -129,7 +129,8 @@ function Login({ route, navigation }) {
                    */
                    
                     //const uri = `${process.env.ROUTE}/login`;
-                    let uri = 'http://localhost:3000/login';
+                    let uri='https://cis693-backend.vercel.app/login'
+                    //let uri = 'https://cis693-backend.vercel.app/login';
                     //axios.post(uri, { ...state, expoToken: expoToken }).then(res => {
                     axios.post(uri, { ...state}).then(res => {
                         console.log(res.data.token)

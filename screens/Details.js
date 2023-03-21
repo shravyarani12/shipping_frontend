@@ -21,7 +21,7 @@ function Details(props) {
   const callShowMoreDetails = useCallback((tNum) => {
     console.log("Start Tracking API calling")
     //const uri=`${process.env.ROUTE}/tracking`
-    const uri=`http://localhost:3000/ship/trackingMoreDetails`;
+    const uri=`https://cis693-backend.vercel.app/ship/trackingMoreDetails`;
     console.log({
       "id":props.id,
       "shipper": props.shipper,

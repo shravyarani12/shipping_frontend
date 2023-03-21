@@ -87,7 +87,7 @@ function Register({ route, navigation }) {
 
                 //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/register`;
                 //const uri = `${process.env.ROUTE}/register`
-                let uri = 'http://localhost:3000/register';
+                let uri = 'https://cis693-backend.vercel.app/register';
                 //uri='https://shippingbackend.herokuapp.com/register';
                 console.log(uri)
                 console.log({ ...state })
