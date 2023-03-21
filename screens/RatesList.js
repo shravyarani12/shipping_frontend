@@ -11,6 +11,8 @@ import Modal from "react-native-modal";
 
 import { LogBox } from 'react-native';
 
+import PaymentForm from './PaymentForm';
+
 
 const item = {
     provider: "",
@@ -37,6 +39,8 @@ export default function RatesList(props) {
     const [emailSent, setEmailSent] = useState(null);
     const [emailErr, setEmailErr] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [paymentFormVisible, setPaymentFormVisible] = useState(false);
+    const [paymentFailed, setPaymentFailed] = useState(false);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -75,19 +79,24 @@ export default function RatesList(props) {
                                 "content-type": "application/json"
                             }
                         }).then(res => {
+                            console.log("setPaymentFormVisible")
+
+                            setPaymentFormVisible(true);
                             setIsLoading(false);
                             setApiErr("false")
                             setApiLabelErr("false")
-                            setModalVisible(true)
+                           
 
 
                         }).catch(err => {
+                            setPaymentFormVisible(true);
                             setIsLoading(false);
                             setApiErr("false")
                             setApiLabelErr("true")
                             setModalVisible(true)
                         })
                     } else {
+                        setPaymentFormVisible(true);
                         setIsLoading(false);
                         setApiErr("false")
                         setApiLabelErr("true")
@@ -208,7 +217,7 @@ export default function RatesList(props) {
             </Modal>}
 
 
-            <VStack m={2} spacing={1}>
+            {!paymentFormVisible && <VStack m={2} spacing={1}>
 
                 <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
                     <Text style={{ fontSize: 24, textAlign: "center", paddingBottom: 15, marginTop: 20, borderColor: "black" }}>Rates List</Text>
@@ -224,7 +233,7 @@ export default function RatesList(props) {
                         leadingMode="avatar"
                         key={index}
                         title={
-                            
+
                             <VStack spacing={1}>
                                 {item.servicelevel.name && <Text style={{ fontSize: 14 }}>Name : {item.servicelevel.name}</Text>}
                                 <Text style={{ fontSize: 14 }}>Amount : $ {item.amount}</Text>
@@ -238,23 +247,28 @@ export default function RatesList(props) {
                             <Text style={{ fontSize: 16, textAlign: "center", paddingBottom: 15, marginTop: 5, paddingRight: 10 }}>{item.provider}</Text>
                         </VStack>}
                         trailing={props =>
-                            <View style={{ right: 10,height:40,width:60, borderColor:"black",border:5 }}>
+                            <View style={{ right: 10, height: 40, width: 60, borderColor: "black", border: 5 }}>
                                 {/* <FontAwesome5.Button name="local-post-office" backgroundColor="green" onPress={() => { getLabel(item) }}>
                                     
                                 </FontAwesome5.Button> */}
                                 <FontAwesome5 style={styles.icon} name={"local-post-office"} size={30} color={"green"} onPress={() => { getLabel(item) }} />
                             </View>
-                             
+
                         }
                     />)
                 })}
             </VStack>
+
+            }
+
+            {paymentFormVisible && <PaymentForm setModalVisible={setModalVisible} setPaymentFailed={setPaymentFailed}  setPaymentFormVisible={setPaymentFormVisible}/>}
+
             <Modal isVisible={isModalVisible} style={{ maxHeight: 300, borderRadius: 20 }}>
                 <View style={{ flex: 1, backgroundColor: "white", paddingTop: 50, paddingRight: 15, paddingLeft: 15, height: 50, border: 15, borderRadius: 15 }}>
                     {apiLabelErr == "false" &&
-                        <VStack spacing={1}>
-                            <Text style={{ fontSize: 18, paddingBottom: 20 }}>Enter Email Id to which details should be sent to</Text>
-                            <View style={styles.inputContainer}>
+                       <VStack spacing={1}>
+                           {!paymentFailed &&  <Text style={{ fontSize: 18, paddingBottom: 20 }}>Enter Email Id to which details should be sent to</Text>}
+                           {!paymentFailed &&    <View style={styles.inputContainer}>
                                 <TextInput
                                     variant='outlined'
                                     value={email}
@@ -269,7 +283,7 @@ export default function RatesList(props) {
                                         sendEmail(labelDetails)
                                     }} />
                                 }
-                            </View>
+                            </View>}
 
                             {emailSent == "true" && <Text style={{ textAlign: "center", fontSize: 14, color: "green", fontStyle: "italic", paddingBottom: 10, paddingTop: 10 }}>Label was sent to email Succesfully</Text>}
 
@@ -279,8 +293,15 @@ export default function RatesList(props) {
                                 <VStack spacing={1}>
                                     <Text style={{ textAlign: "center", fontSize: 14, color: "red", fontStyle: "italic", }}>Enter Valid Email</Text>
                                 </VStack>
+                            } 
+
+
+
+                            {paymentFailed &&
+                                <VStack spacing={1}>
+                                    <Text style={{ textAlign: "center", fontSize: 14, color: "red", fontStyle: "italic", }}>Payment Failed, Try Again</Text>
+                                </VStack>
                             }
-                          
                         </VStack>
 
                     }

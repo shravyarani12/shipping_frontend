@@ -126,14 +126,14 @@ function ShipmentLabel({ route, navigation }) {
                         })
                     }}
                 >
-                    <View style={{ backgroundColor: "black", borderRadius: 20, }}>
+                    <View style={{ backgroundColor: "black", borderRadius: 20,marginLeft:10,paddingTop:5, paddingBottom:5  }}>
                         <Text style={styles.buttonHistoryText}>Sign Out</Text>
                     </View>
 
                 </TouchableOpacity>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{ paddingRight: 10 }}
+                <TouchableOpacity style={{ paddingRight: 10, }}
                     onPress={() => {
                         navigation.navigate('Home', {
                             isLogin: "True",
@@ -142,7 +142,7 @@ function ShipmentLabel({ route, navigation }) {
                         })
                     }}
                 >
-                    <View style={{ backgroundColor: "black", borderRadius: 20, }}>
+                    <View style={{ backgroundColor: "black", borderRadius: 20,marginLeft:10,paddingTop:5, paddingBottom:5  }}>
                         <Text style={styles.buttonHistoryText}>Home</Text>
                     </View>
                 </TouchableOpacity>
@@ -826,7 +826,7 @@ const styles = StyleSheet.create({
     save: {
         marginTop: 5,
         marginBottom: 5,
-        marginLeft: 15,
+        marginLeft: 5,
         marginRight: 15,
         width: 150,
         fontSize: 8,
@@ -868,7 +868,7 @@ const styles = StyleSheet.create({
     prev: {
         marginTop: 5,
         marginBottom: 5,
-        marginLeft: 15,
+        marginLeft: 5,
         marginRight: 15,
         fontSize: 8,
         width: 150,
@@ -905,18 +905,6 @@ const styles = StyleSheet.create({
         letterSpacing: 0.25,
         color: 'white',
     },
-    buttonHistoryText: {
-        fontSize: 14,
-        lineHeight: 21,
-        fontWeight: 'normal',
-        letterSpacing: 0.25,
-        color: 'black',
-        paddingLeft: 10,
-        paddingRight: 10,
-        borderWidth: 1,
-        borderRadius: 20
-    },
-
     textResult: {
         flex: 1, textAlign: "left", borderWidth: 1,
         borderColor: 'black',
@@ -939,8 +927,6 @@ const styles = StyleSheet.create({
         color: 'white',
         paddingLeft: 10,
         paddingRight: 10,
-        borderWidth: 2,
-        borderRadius: 20,
         borderColor: "black"
     },
 });

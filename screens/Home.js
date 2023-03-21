@@ -120,8 +120,8 @@ function Home({ route, navigation }) {
 
     useEffect(() => {
         // //Brute Login 
-        // route.params={}
-        // route.params.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MTQsIm5hbWUiOiJzaHJhdnlhIGRhbWFyYXBlbGxpIn0sImlhdCI6MTY3OTI4MDQ2OCwiZXhwIjoxNjc5MzA1NjY4fQ.r3o7MfnMwDrAxW4rGQclphioaahUrsO1kcSaOkqTY94';
+        route.params={}
+        route.params.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MTQsIm5hbWUiOiJzaHJhdnlhIGRhbWFyYXBlbGxpIn0sImlhdCI6MTY3OTQxNDkwMiwiZXhwIjoxNjc5NDQwMTAyfQ.2ILcwiau2N1bVvkn6gBO_p-MIhlvnRo8_z6M8PLzQ2c';
         // //Brute Login 
         
         if (route.params?.token == null) {
