@@ -148,10 +148,10 @@ function AddTracking({ route, navigation }) {
                     <SafeAreaView style={styles.container2}>
                         <VStack spacing={20} m={12} divider={true}>
                             <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
-                                <Text style={{ fontSize: 24, textAlign: "center", fontFamily: "ui-sans-serif", textDecoration: "underline", paddingBottom: 5, marginTop: 15, borderRadius: 5,  borderColor: "black" }}>Add Tracking Information</Text>
+                                <Text style={{ fontSize: 24, textAlign: "center",  paddingBottom: 5, marginTop: 15, borderRadius: 5,  borderColor: "black" }}>Add Tracking Information</Text>
                             </Stack>
                             {error && <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
-                                <Text style={{ fontSize: 14, textAlign: "center", fontFamily: "ui-sans-serif", color: "red", paddingBottom: 15, marginTop: 20, borderRadius: 5, border: 20, borderColor: "black" }}>Invalid Tracking Details</Text>
+                                <Text style={{ fontSize: 14, textAlign: "center",  color: "red", paddingBottom: 15, marginTop: 20,  borderColor: "black" }}>Invalid Tracking Details</Text>
                             </Stack>}
                             <TxtInput handleChange={handleChange} state={state} stateKey={"name"} label={"Enter Item Name*"} />
                             {err.name != null && <Text style={styles.err}>Enter Item Name*</Text>}

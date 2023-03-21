@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler';
+
 import React, { useEffect } from 'react';
 import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native"
@@ -16,11 +16,23 @@ import registerNNPushToken from 'native-notify';
 import Constants from "expo-constants";
 const { manifest } = Constants;
 
+import { LogBox  } from 'react-native';
+
+
 //process.env.ROUTE = 'https://shipping-backend.vercel.app';
 //process.env.ROUTE = 'https://shippingbackend.herokuapp.com';
 process.env.ROUTE = 'https://www.shravyarani.com';
 export default function App() {
   //registerNNPushToken(2988, 'KVpPJHcdkZMXyaAsAvsmhz');
+
+
+
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+  }, [])
+
+
 
   const Stack = createStackNavigator();
   return (

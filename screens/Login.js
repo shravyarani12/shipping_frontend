@@ -272,11 +272,6 @@ function Login({ route, navigation }) {
                     />}
                 </View>
             </View>
-
-
-
-
-
         </SafeAreaView>
     )
 }

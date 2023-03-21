@@ -7,6 +7,11 @@ import MIcon from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome5 from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Modal from "react-native-modal";
+
+
+import { LogBox } from 'react-native';
+
+
 const item = {
     provider: "",
     providerImage: "",
@@ -17,6 +22,12 @@ const item = {
     rateId: ""
 }
 export default function RatesList(props) {
+
+
+    useEffect(() => {
+        LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    }, [])
+
 
     const [apiErr, setApiErr] = useState("false")
     const [apiLabelErr, setApiLabelErr] = useState("false")
@@ -55,7 +66,7 @@ export default function RatesList(props) {
                 if (res.status == 200) {
                     console.log(res.data)
                     setLabelDetails({ ...res.data.transaction })
-                    if (res.data.transaction.object_state != "INVALID") {
+                    if (res.data.transaction.object_state = "VALID" && res.data.transaction.status != "ERROR") {
                         const uri = `https://www.shravyarani.com/ship/addTracking`;
                         console.log({ name: props.name, trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider })
                         axios.post(uri, { name: props.name.split("-")[0], trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider }, {
@@ -111,7 +122,7 @@ export default function RatesList(props) {
 
 
     function sendEmail(labelDetails) {
-        console.log("email : "+email)
+        console.log("email : " + email)
         let emailRegex = /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/;
         console.log(emailRegex.test(email))
         if (!emailRegex.test(email)) {
@@ -178,14 +189,15 @@ export default function RatesList(props) {
         <View>
 
             {isLoading && <Modal isVisible={isLoading}
-                backdropColor={"#B4B3DB"}
-                backdropOpacity={0.8}
-                animationIn={"zoomInDown"}
-                animationOut={"zoomOutUp"}
-                animationInTiming={600}
-                animationOutTiming={600}
-                backdropTransitionInTiming={600}
-                backdropTransitionOutTiming={600}>
+            // backdropColor={"#B4B3DB"}
+            // backdropOpacity={0.8}
+            // animationIn={"zoomInDown"}
+            // animationOut={"zoomOutUp"}
+            // animationInTiming={600}
+            // animationOutTiming={600}
+            // backdropTransitionInTiming={600}
+            // backdropTransitionOutTiming={600}
+            >
                 <Stack fill center spacing={4}>
                     <FAB
                         icon={props => <MIcon name="plus" {...props} />}
@@ -199,19 +211,20 @@ export default function RatesList(props) {
             <VStack m={2} spacing={1}>
 
                 <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
-                    <Text style={{ fontSize: 24, textAlign: "center", textDecoration: "underline", fontFamily: "ui-sans-serif", paddingBottom: 15, marginTop: 20, borderRadius: 5, border: 20, borderColor: "black" }}>Rates List</Text>
+                    <Text style={{ fontSize: 24, textAlign: "center", paddingBottom: 15, marginTop: 20, borderColor: "black" }}>Rates List</Text>
                 </Stack>
                 <Flex direction={"row"} style={{ backgroundColor: "orange" }}>
-                    <Text style={{ textDecoration: "underline", fontSize: 18, textAlign: "center", fontFamily: "ui-sans-serif", paddingLeft: 15, paddingBottom: 15, marginTop: 5, borderRadius: 5, border: 20, borderColor: "black", paddingTop: 10, paddingRight: 10 }}>Provider</Text>
-                    <Text style={{ textDecoration: "underline", fontSize: 18, fontFamily: "ui-sans-serif", paddingLeft: 20, paddingBottom: 15, marginTop: 5, borderRadius: 5, border: 20, borderColor: "black", paddingTop: 10, paddingRight: 10, marginLeft: 20 }}>Details</Text>
+                    <Text style={{ fontSize: 18, textAlign: "center", paddingLeft: 15, paddingBottom: 15, marginTop: 5, borderColor: "black", paddingTop: 10, paddingRight: 10 }}>Provider</Text>
+                    <Text style={{ fontSize: 18, paddingLeft: 20, paddingBottom: 15, marginTop: 5, borderColor: "black", paddingTop: 10, paddingRight: 10, marginLeft: 20 }}>Details</Text>
                     <Spacer />
-                    <Text style={{ textDecoration: "underline", fontSize: 18, textAlign: "center", fontFamily: "ui-sans-serif", paddingBottom: 15, marginTop: 5, borderRadius: 5, border: 20, borderColor: "black", paddingTop: 10, paddingRight: 10, paddingLeft: 10 }}>Generate Label</Text>
+                    <Text style={{ fontSize: 18, textAlign: "center", paddingBottom: 15, marginTop: 5, borderColor: "black", paddingTop: 10, paddingRight: 10, paddingLeft: 10 }}>Generate Label</Text>
                 </Flex>
                 {props.rates.map((item, index) => {
                     return (<ListItem
                         leadingMode="avatar"
                         key={index}
                         title={
+                            
                             <VStack spacing={1}>
                                 {item.servicelevel.name && <Text style={{ fontSize: 14 }}>Name : {item.servicelevel.name}</Text>}
                                 <Text style={{ fontSize: 14 }}>Amount : $ {item.amount}</Text>
@@ -222,17 +235,16 @@ export default function RatesList(props) {
                         }
                         leading={<VStack m={2} spacing={1} style={{ paddingTop: 10 }}>
                             <Avatar image={{ uri: item.provider_image_200 }} size={40} />
-                            <Text style={{ fontSize: 16, textAlign: "center", fontFamily: "ui-sans-serif", paddingBottom: 15, marginTop: 5, paddingRight: 10 }}>{item.provider}</Text>
+                            <Text style={{ fontSize: 16, textAlign: "center", paddingBottom: 15, marginTop: 5, paddingRight: 10 }}>{item.provider}</Text>
                         </VStack>}
                         trailing={props =>
-                            <View style={{ right: 30 }}>
-                                <FontAwesome5.Button name="local-post-office" backgroundColor="green" onPress={() => { getLabel(item) }}>
-                                    <Text style={{ fontFamily: 'Arial', fontSize: 12, color: "white" }} onPress={() => { getLabel(item) }}>
-                                        Get Label
-                                    </Text>
-                                </FontAwesome5.Button>
+                            <View style={{ right: 10,height:40,width:60, borderColor:"black",border:5 }}>
+                                {/* <FontAwesome5.Button name="local-post-office" backgroundColor="green" onPress={() => { getLabel(item) }}>
+                                    
+                                </FontAwesome5.Button> */}
+                                <FontAwesome5 style={styles.icon} name={"local-post-office"} size={30} color={"green"} onPress={() => { getLabel(item) }} />
                             </View>
-                            //  <FontAwesome5 style={styles.icon} name={"local-post-office"} size={30} color={"green"} onPress={() => { getLabel(item.object_id) }} />
+                             
                         }
                     />)
                 })}
@@ -263,21 +275,12 @@ export default function RatesList(props) {
 
                             {emailSent == "false" && <Text style={{ textAlign: "center", fontSize: 14, color: "red", fontStyle: "italic", paddingBottom: 10, paddingTop: 10 }}>Failed to Send Email, Try Again!!</Text>}
 
-                            {emailErr=="true" &&
+                            {emailErr == "true" &&
                                 <VStack spacing={1}>
                                     <Text style={{ textAlign: "center", fontSize: 14, color: "red", fontStyle: "italic", }}>Enter Valid Email</Text>
                                 </VStack>
                             }
-                            <View style={[{ paddingLeft: "35%", borderRadius: 20 }]}>
-                                <Text title="CLOSE" style={{ color: "white", backgroundColor: "purple", borderRadius: 20, textAlign: "center", paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20, fontSize: "18", width: "fit-content" }}
-                                    onPress={() => {
-                                        toggleModal();
-                                        setEmail("");
-                                        setEmailErr("false");
-                                        setEmailSent(null)
-
-                                    }} >CLOSE</Text>
-                            </View>
+                          
                         </VStack>
 
                     }
@@ -288,6 +291,16 @@ export default function RatesList(props) {
                             <Text style={{ textAlign: "center", fontSize: 13, color: "red", fontStyle: "italic", }}>Reason: {(labelDetails.messages && labelDetails.messages.length > 0 && labelDetails.messages[0].text) ? labelDetails.messages[0].text : "UNKNOWN"}</Text>
                         </VStack>
                     }
+                    <View style={[{ borderRadius: 20 }]}>
+                        <Text title="CLOSE" style={{ color: "white", backgroundColor: "purple", borderRadius: 20, textAlign: "center", paddingTop: 10, paddingBottom: 10, fontSize: 18 }}
+                            onPress={() => {
+                                toggleModal();
+                                setEmail("");
+                                setEmailErr("false");
+                                setEmailSent(null)
+
+                            }} >CLOSE</Text>
+                    </View>
 
                 </View>
             </Modal>

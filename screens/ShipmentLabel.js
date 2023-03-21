@@ -24,6 +24,10 @@ import Modal from "react-native-modal";
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { LogBox } from 'react-native';
+
+import FontAwesome5 from 'react-native-vector-icons/MaterialIcons';
+
 
 const ICONS = {
     open: require('../assets/open.jpg'),
@@ -105,6 +109,12 @@ const parcelErrValue = {
     "weight": null
 };
 function ShipmentLabel({ route, navigation }) {
+
+    useEffect(() => {
+        LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    }, [])
+
+
 
     useEffect(() => {
         navigation.setOptions({
@@ -221,13 +231,13 @@ function ShipmentLabel({ route, navigation }) {
         //     error[param] = "Enter correct Value";
         // }
         // currentState[param] = text;
-        if(param=="zip"){
+        if (param == "zip") {
             let numberRegex = /^\d+$/;
-            if(numberRegex.test(text)){
+            if (numberRegex.test(text)) {
                 currentState[param] = text;
             }
 
-        }else{
+        } else {
             currentState[param] = text;
         }
 
@@ -249,13 +259,13 @@ function ShipmentLabel({ route, navigation }) {
         // } else {
         //     error[param] = "Enter correct Value";
         // }
-        if(param=="zip"){
+        if (param == "zip") {
             let numberRegex = /^\d+$/;
-            if(numberRegex.test(text)){
+            if (numberRegex.test(text)) {
                 currentState[param] = text;
             }
 
-        }else{
+        } else {
             currentState[param] = text;
         }
         setFromErr({ ...error });
@@ -340,7 +350,7 @@ function ShipmentLabel({ route, navigation }) {
             dir == "to" ? setToErr({ ...error }) : setFromErr({ ...error });
             return false;
         }
-        else if (address.zip.length !=5 || !(numberRegex.test(address.zip))) {
+        else if (address.zip.length != 5 || !(numberRegex.test(address.zip))) {
             let error = { ...toerr };
             error["zip"] = "Zip code should be 5 digit characters only";
             dir == "to" ? setToErr({ ...error }) : setFromErr({ ...error });
@@ -548,16 +558,22 @@ function ShipmentLabel({ route, navigation }) {
 
 
     return (
-        <View>
-            {isLoading && <Modal isVisible={isLoading}
-                backdropColor={"#B4B3DB"}
-                backdropOpacity={0.8}
-                animationIn={"zoomInDown"}
-                animationOut={"zoomOutUp"}
-                animationInTiming={600}
-                animationOutTiming={600}
-                backdropTransitionInTiming={600}
-                backdropTransitionOutTiming={600}>
+        <View style={{ flex: 1 }}>
+
+
+
+
+            <View style={{ zIndex: 2, position: "absolute", width: "100%", opacity: isLoading ? 0.5: 1 }}>
+                {/* {isLoading && <Modal isVisible={isLoading}
+                // backdropColor={"#B4B3DB"}
+                // backdropOpacity={0.8}
+                // animationIn={"zoomInDown"}
+                // animationOut={"zoomOutUp"}
+                // animationInTiming={600}
+                // animationOutTiming={600}
+                // backdropTransitionInTiming={600}
+                // backdropTransitionOutTiming={600}
+                >
                 <Stack fill center spacing={4}>
                     <FAB
                         icon={props => <Icon name="plus" {...props} />}
@@ -565,114 +581,59 @@ function ShipmentLabel({ route, navigation }) {
                         loading
                     />
                 </Stack>
-            </Modal>}
+            </Modal>} */}
 
 
 
 
-            {next == 1 && <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <SafeAreaView style={styles.container1} >
-                    <Stack spacing={4} style={{ margin: 16 }}>
 
-                        <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
-                            <Text style={{ fontSize: 24, textAlign: "center", textDecoration: "underline", fontFamily: "ui-sans-serif", paddingBottom: 15, marginTop: 20, borderRadius: 5, border: 20, borderColor: "black" }}>SHIPS TO</Text>
-                        </Stack>
 
-                        {apiErr.toAddress != null && <Text style={styles.err}>Invalid To Address , Update them </Text>}
-                        {apiErrDesc.toAddress != null && <Text style={styles.err}>{apiErrDesc.toAddress} </Text>}
-                        <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"name"} label={"Enter Name for this address*"} />
-                        {toerr.name != null && <Text style={styles.err}>Enter Name for this Address</Text>}
-
-                        <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"street1"} label={"Address Line 1*"} />
-                        {toerr.street1 != null && <Text style={styles.err}>Enter Valid Street1</Text>}
-
-                        <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"street2"} label={"Address Line 2"} />
-                        {toerr.street2 != null && <Text style={styles.err}>Enter Valid Street2</Text>}
-
-                        <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"city"} label={"City*"} />
-                        {toerr.city != null && <Text style={styles.err}>Enter Valid City</Text>}
-
-                        <SafeAreaView style={{ backgroundColor: "#fff", border: "5px", borderColor: "black" }}>
-                            <DropD handleToAddressChange={handleToAddressChange} add="to" value={toAddress.state} />
-                        </SafeAreaView>
-                        {toerr.state != null && <Text style={styles.err}>Enter Valid State</Text>}
-
-                        <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"country"} label={"Country*"} />
-                        {toerr.country != null && <Text style={styles.err}>Enter Valid Country</Text>}
-
-                        <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"zip"} label={"Zip*"} />
-                        {toerr.zip != null && <Text style={styles.err}>Enter Valid Zip</Text>}
-
-                    </Stack>
-                    <SafeAreaView style={{ flexDirection: "row", marginBottom: 3, justifyContent: "center" }}>
-                        <View style={{ flex: 1, }} >
-                            <Pressable style={styles.save} onPress={() => {
-                                validateAddress("to").then((res) => {
-                                    setNext(2)
-                                })
-                            }}>
-                                <Text style={styles.buttonText}>Save and Next</Text>
-                            </Pressable>
-                        </View>
-                        <View style={{ flex: 1, }} >
-                            <Pressable style={styles.clear} onPress={clearToAddress}>
-                                <Text style={styles.buttonText}>Clear</Text>
-                            </Pressable>
-                        </View>
-                    </SafeAreaView>
-                </SafeAreaView>
-            </TouchableWithoutFeedback>
-
-            }
-            {next == 2 &&
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-
+                {next == 1 && <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <SafeAreaView style={styles.container1} >
                         <Stack spacing={4} style={{ margin: 16 }}>
 
                             <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
-                                <Text style={{ fontSize: 24, textAlign: "center", fontFamily: "ui-sans-serif", textDecoration: "underline", paddingBottom: 15, marginTop: 20, borderRadius: 5, border: 20, borderColor: "black" }}>SHIPS FROM</Text>
+                                <Text style={{ fontSize: 24, textAlign: "center", paddingBottom: 15, marginTop: 20, borderColor: "black" }}>SHIPS TO</Text>
                             </Stack>
 
-                            {apiErr.fromAddress != null && <Text style={styles.err}>Invalid From Address , Update them </Text>}
-                            {apiErrDesc.fromAddress != null && <Text style={styles.err}>{apiErrDesc.fromAddress} </Text>}
+                            {apiErr.toAddress != null && <Text style={styles.err}>Invalid To Address , Update them </Text>}
+                            {apiErrDesc.toAddress != null && <Text style={styles.err}>{apiErrDesc.toAddress} </Text>}
+                            <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"name"} label={"Enter Name for this address*"} />
+                            {toerr.name != null && <Text style={styles.err}>Enter Name for this Address</Text>}
 
-                            <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"name"} label={"Enter Name for this address*"} />
-                            {fromerr.name != null && <Text style={styles.err}>Enter Name for this Address</Text>}
+                            <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"street1"} label={"Address Line 1*"} />
+                            {toerr.street1 != null && <Text style={styles.err}>Enter Valid Street1</Text>}
 
-                            <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"street1"} label={"Address Line 1*"} />
-                            {fromerr.street1 != null && <Text style={styles.err}>Enter Valid Street1</Text>}
+                            <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"street2"} label={"Address Line 2"} />
+                            {toerr.street2 != null && <Text style={styles.err}>Enter Valid Street2</Text>}
 
-                            <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"street2"} label={"Address Line 2"} />
-                            {fromerr.street2 != null && <Text style={styles.err}>Enter Valid Street2</Text>}
-
-                            <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"city"} label={"City*"} />
-                            {fromerr.city != null && <Text style={styles.err}>Enter Valid City</Text>}
+                            <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"city"} label={"City*"} />
+                            {toerr.city != null && <Text style={styles.err}>Enter Valid City</Text>}
 
                             <SafeAreaView style={{ backgroundColor: "#fff", border: "5px", borderColor: "black" }}>
-                                <DropD handleToAddressChange={handleFromAddressChange} add="to" value={fromAddress.state} />
+                                <DropD handleToAddressChange={handleToAddressChange} add="to" value={toAddress.state} />
                             </SafeAreaView>
-                            {fromerr.state != null && <Text style={styles.err}>Enter Valid State</Text>}
+                            {toerr.state != null && <Text style={styles.err}>Enter Valid State</Text>}
 
-                            <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"country"} label={"Country*"} />
-                            {fromerr.country != null && <Text style={styles.err}>Enter Valid Country</Text>}
+                            <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"country"} label={"Country*"} />
+                            {toerr.country != null && <Text style={styles.err}>Enter Valid Country</Text>}
 
-                            <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"zip"} label={"Zip*"} />
-                            {fromerr.zip != null && <Text style={styles.err}>Enter Valid Zip</Text>}
+                            <TxtInput handleChange={handleToAddressChange} state={toAddress} stateKey={"zip"} label={"Zip*"} />
+                            {toerr.zip != null && <Text style={styles.err}>Enter Valid Zip</Text>}
+
                         </Stack>
-
                         <SafeAreaView style={{ flexDirection: "row", marginBottom: 3, justifyContent: "center" }}>
                             <View style={{ flex: 1, }} >
                                 <Pressable style={styles.save} onPress={() => {
-                                    validateAddress("from").then((res) => {
-                                        setNext(3)
+                                    validateAddress("to").then((res) => {
+                                        setNext(2)
                                     })
                                 }}>
                                     <Text style={styles.buttonText}>Save and Next</Text>
                                 </Pressable>
                             </View>
                             <View style={{ flex: 1, }} >
-                                <Pressable style={styles.clear} onPress={clearFromAddress}>
+                                <Pressable style={styles.clear} onPress={clearToAddress}>
                                     <Text style={styles.buttonText}>Clear</Text>
                                 </Pressable>
                             </View>
@@ -680,74 +641,149 @@ function ShipmentLabel({ route, navigation }) {
                     </SafeAreaView>
                 </TouchableWithoutFeedback>
 
-            }
+                }
+                {next == 2 &&
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            {next == 3 &&
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <SafeAreaView style={styles.container1} >
+                            <Stack spacing={4} style={{ margin: 16 }}>
 
-                    <SafeAreaView style={styles.container1} >
-                        <Stack spacing={4} style={{ margin: 16 }}>
+                                <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
+                                    <Text style={{ fontSize: 24, textAlign: "center", paddingBottom: 15, marginTop: 20, borderColor: "black" }}>SHIPS FROM</Text>
+                                </Stack>
 
-                            <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
-                                <Text style={{ fontSize: 24, textAlign: "center", textDecoration: "underline", fontFamily: "ui-sans-serif", paddingBottom: 15, marginTop: 20, borderRadius: 5, border: 20, borderColor: "black" }}>Parcel Dimensions</Text>
+                                {apiErr.fromAddress != null && <Text style={styles.err}>Invalid From Address , Update them </Text>}
+                                {apiErrDesc.fromAddress != null && <Text style={styles.err}>{apiErrDesc.fromAddress} </Text>}
+
+                                <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"name"} label={"Enter Name for this address*"} />
+                                {fromerr.name != null && <Text style={styles.err}>Enter Name for this Address</Text>}
+
+                                <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"street1"} label={"Address Line 1*"} />
+                                {fromerr.street1 != null && <Text style={styles.err}>Enter Valid Street1</Text>}
+
+                                <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"street2"} label={"Address Line 2"} />
+                                {fromerr.street2 != null && <Text style={styles.err}>Enter Valid Street2</Text>}
+
+                                <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"city"} label={"City*"} />
+                                {fromerr.city != null && <Text style={styles.err}>Enter Valid City</Text>}
+
+                                <SafeAreaView style={{ backgroundColor: "#fff", border: "5px", borderColor: "black" }}>
+                                    <DropD handleToAddressChange={handleFromAddressChange} add="to" value={fromAddress.state} />
+                                </SafeAreaView>
+                                {fromerr.state != null && <Text style={styles.err}>Enter Valid State</Text>}
+
+                                <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"country"} label={"Country*"} />
+                                {fromerr.country != null && <Text style={styles.err}>Enter Valid Country</Text>}
+
+                                <TxtInput handleChange={handleFromAddressChange} state={fromAddress} stateKey={"zip"} label={"Zip*"} />
+                                {fromerr.zip != null && <Text style={styles.err}>Enter Valid Zip</Text>}
                             </Stack>
 
-                            {apiErr.parcel != null && <Text style={styles.err}>Invalid To Parcel Dimensions , Update them </Text>}
-
-                            <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"name"} label={"Enter Name for this Parcel*"} />
-                            {parcelerr.name != null && <Text style={styles.err}>Enter Name for this Parcel</Text>}
-
-                            <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"length"} label={"Length in Inches*"} />
-                            {parcelerr.length != null && <Text style={styles.err}>Enter Valid Length</Text>}
-
-                            <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"width"} label={"Width in Inches*"} />
-                            {parcelerr.width != null && <Text style={styles.err}>Enter Valid Width</Text>}
-
-                            <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"height"} label={"Height in Inches*"} />
-                            {parcelerr.height != null && <Text style={styles.err}>Enter Valid Height</Text>}
-
-                            <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"weight"} label={"Weight in Lbs*"} />
-                            {parcelerr.weight != null && <Text style={styles.err}>Enter Valid Weight</Text>}
-
-
-                        </Stack>
-                        <SafeAreaView style={{ flexDirection: "row", marginBottom: 3, justifyContent: "center" }}>
-                            <View style={{ flex: 1, }} >
-                                <Pressable style={styles.save} onPress={() => {
-                                    validateParcel().then(() => {
-                                        save()
-                                    })
-                                }}>
-                                    <Text style={styles.buttonText}>GetShippingRates</Text>
-                                </Pressable>
-                            </View>
-                            <View style={{ flex: 1, }} >
-                                <Pressable style={styles.clear} onPress={clearParcel}>
-                                    <Text style={styles.buttonText}>Clear</Text>
-                                </Pressable>
-                            </View>
+                            <SafeAreaView style={{ flexDirection: "row", marginBottom: 3, justifyContent: "center" }}>
+                                <View style={{ flex: 1, }} >
+                                    <Pressable style={styles.save} onPress={() => {
+                                        validateAddress("from").then((res) => {
+                                            setNext(3)
+                                        })
+                                    }}>
+                                        <Text style={styles.buttonText}>Save and Next</Text>
+                                    </Pressable>
+                                </View>
+                                <View style={{ flex: 1, }} >
+                                    <Pressable style={styles.clear} onPress={clearFromAddress}>
+                                        <Text style={styles.buttonText}>Clear</Text>
+                                    </Pressable>
+                                </View>
+                            </SafeAreaView>
                         </SafeAreaView>
-                    </SafeAreaView>
-                </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback>
 
-            }
+                }
 
-            <SafeAreaView style={{ flexDirection: "row", marginBottom: 3, justifyContent: "center" }}>
-                {next != 1 && <View style={{ flex: 1, }} >
-                    <Pressable style={styles.prev} onPress={() => {
-                        setNext(next - 1)
-                        setRatesList([])
-                    }}>
-                        <Text style={styles.buttonText}>Prev</Text>
-                    </Pressable>
-                </View>}
-            </SafeAreaView>
+                {next == 3 &&
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            {next == 4 && ratesList.length > 0 && <RatesList rates={ratesList} route={route} name={parcel.name + "-" + fromAddress.name + "-" + toAddress.name} isLoading={setIsLoading} />}
+                        <SafeAreaView style={styles.container1} >
+                            <Stack spacing={4} style={{ margin: 16 }}>
+
+                                <Stack spacing={2} style={{ marginBottom: 5, borderRadius: 5 }}>
+                                    <Text style={{ fontSize: 24, textAlign: "center", paddingBottom: 15, marginTop: 20, borderColor: "black" }}>Parcel Dimensions</Text>
+                                </Stack>
+
+                                {apiErr.parcel != null && <Text style={styles.err}>Invalid To Parcel Dimensions , Update them </Text>}
+
+                                <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"name"} label={"Enter Name for this Parcel*"} />
+                                {parcelerr.name != null && <Text style={styles.err}>Enter Name for this Parcel</Text>}
+
+                                <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"length"} label={"Length in Inches*"} />
+                                {parcelerr.length != null && <Text style={styles.err}>Enter Valid Length</Text>}
+
+                                <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"width"} label={"Width in Inches*"} />
+                                {parcelerr.width != null && <Text style={styles.err}>Enter Valid Width</Text>}
+
+                                <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"height"} label={"Height in Inches*"} />
+                                {parcelerr.height != null && <Text style={styles.err}>Enter Valid Height</Text>}
+
+                                <TxtInput handleChange={handleParcelChange} state={parcel} stateKey={"weight"} label={"Weight in Lbs*"} />
+                                {parcelerr.weight != null && <Text style={styles.err}>Enter Valid Weight</Text>}
 
 
+                            </Stack>
+                            <SafeAreaView style={{ flexDirection: "row", marginBottom: 3, justifyContent: "center" }}>
+                                <View style={{ flex: 1, }} >
+                                    <Pressable style={styles.save} onPress={() => {
+                                        validateParcel().then(() => {
+                                            save()
+                                        })
+                                    }}>
+                                        <Text style={styles.buttonText}>GetShippingRates</Text>
+                                    </Pressable>
+                                </View>
+                                <View style={{ flex: 1, }} >
+                                    <Pressable style={styles.clear} onPress={clearParcel}>
+                                        <Text style={styles.buttonText}>Clear</Text>
+                                    </Pressable>
+                                </View>
+                            </SafeAreaView>
+                        </SafeAreaView>
+                    </TouchableWithoutFeedback>
+
+                }
+
+                <SafeAreaView style={{ flexDirection: "row", marginBottom: 3, justifyContent: "center" }}>
+                    {next != 1 && <View style={{ flex: 1, }} >
+                        <Pressable style={styles.prev} onPress={() => {
+                            setNext(next - 1)
+                            setRatesList([])
+                        }}>
+                            <Text style={styles.buttonText}>Prev</Text>
+                        </Pressable>
+                    </View>}
+                </SafeAreaView>
+
+                {next == 4 && ratesList.length > 0 && <RatesList rates={ratesList} route={route} navigation={navigation} name={parcel.name + "-" + fromAddress.name + "-" + toAddress.name} isLoading={setIsLoading} />}
+
+
+
+            </View>
+
+
+            {isLoading &&<View style={{
+                zIndex: 3,
+                textAlign: 'center',
+                display: "flex",
+                justifyContent: "center",
+                height:"100%"
+            }}>
+                 <Image
+                    style={{ alignSelf: "center", width: 50, height: 50,marginBottom:50 }}
+                    source={require("../assets/loading_1.gif")}
+                />
+            </View>}
 
         </View>
+
+
     )
 }
 
