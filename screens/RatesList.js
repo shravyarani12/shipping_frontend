@@ -344,6 +344,11 @@ export default function RatesList(props) {
                                 setEmailErr("false");
                                 setEmailSent(null)
 
+                                props.navigation.navigate('Home', {
+                                    isLogin: "True",
+                                    uId: props.route.params.uId,
+                                    token: props.route.params.token
+                                })
                             }} >CLOSE</Text>
                     </View>
 
