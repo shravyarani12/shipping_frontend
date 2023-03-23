@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
+import { LogBox } from 'react-native';
+
+
 const CreditCardForm = (props) => {
+    useEffect(() => {
+        LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    }, [])
+
     const [cardNumber, setCardNumber] = useState('');
     const [expirationMM, setExpirationM] = useState('');
     const [expirationYY, setExpirationY] = useState('');
@@ -9,6 +16,7 @@ const CreditCardForm = (props) => {
     const [name, setName] = useState('');
     const [valid, setValid] = useState(null);
 
+    
     // validation function goes here
 
     const validate = () => {

@@ -51,6 +51,7 @@ export default function RatesList(props) {
     }, [])
 
 
+
     function getLabel(item) {
 
 
@@ -156,16 +157,31 @@ export default function RatesList(props) {
                         if (res.status = 200) {
                             setIsLoading(false);
                             setEmailSent("true")
+                            setPaymentFormVisible(false)
+
+                            props.navigation.navigate('Home', {
+                                isLogin: "True",
+                                uId: props.route.params.uId,
+                                token: props.route.params.token
+                            })
+                            
 
                         } else {
                             setIsLoading(false);
                             setEmailSent("false")
+                            setPaymentFormVisible(false)
                         }
                         setTimeout(() => {
                             setEmailSent(null);
                             setEmail("")
                             setEmailErr("false");
                             toggleModal();
+                            setPaymentFormVisible(false)
+                            props.navigation.navigate('Home', {
+                                isLogin: "True",
+                                uId: props.route.params.uId,
+                                token: props.route.params.token
+                            })
 
                         }, 3000)
 
@@ -175,6 +191,7 @@ export default function RatesList(props) {
                         setApiErr("true")
                         setIsLoading(false);
                         setModalVisible(true)
+                        setPaymentFormVisible(false)
                         return reject("")
                     }
                 }).catch(err => {
@@ -189,6 +206,7 @@ export default function RatesList(props) {
                     //     setModalVisible(true)
                     // }
                     setIsLoading(false);
+                    setPaymentFormVisible(false)
                     return reject("")
                 })
             })
@@ -199,15 +217,7 @@ export default function RatesList(props) {
     return (
         <View>
 
-            {isLoading && <Modal isVisible={isLoading}
-            // backdropColor={"#B4B3DB"}
-            // backdropOpacity={0.8}
-            // animationIn={"zoomInDown"}
-            // animationOut={"zoomOutUp"}
-            // animationInTiming={600}
-            // animationOutTiming={600}
-            // backdropTransitionInTiming={600}
-            // backdropTransitionOutTiming={600}
+            {/* {isLoading && <Modal isVisible={isLoading}
             >
                 <Stack fill center spacing={4}>
                     <FAB
@@ -216,7 +226,21 @@ export default function RatesList(props) {
                         loading
                     />
                 </Stack>
-            </Modal>}
+            </Modal>} */}
+
+            {isLoading &&<View style={{
+                zIndex: 3,
+                textAlign: 'center',
+                display: "flex",
+                justifyContent: "center",
+                height:"100%"
+            }}>
+                 <Image
+                    style={{ alignSelf: "center", width: 50, height: 50,marginBottom:50 }}
+                    source={require("../assets/loading_1.gif")}
+                />
+            </View>}
+
 
 
             {!paymentFormVisible && <VStack m={2} spacing={1}>
@@ -263,7 +287,7 @@ export default function RatesList(props) {
 
             }
 
-            {paymentFormVisible && <PaymentForm setModalVisible={setModalVisible} setPaymentFailed={setPaymentFailed}  labelDetails={labelDetails} setPaymentFormVisible={setPaymentFormVisible}/>}
+            {!paymentFailed && paymentFormVisible && <PaymentForm setModalVisible={setModalVisible} setPaymentFailed={setPaymentFailed}  labelDetails={labelDetails} setPaymentFormVisible={setPaymentFormVisible} navigation={props.navigation} />}
 
             <Modal isVisible={isModalVisible} style={{ maxHeight: 300, borderRadius: 20 }}>
                 <View style={{ flex: 1, backgroundColor: "white", paddingTop: 50, paddingRight: 15, paddingLeft: 15, height: 50, border: 15, borderRadius: 15 }}>

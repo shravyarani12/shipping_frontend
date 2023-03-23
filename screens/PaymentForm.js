@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 
 
@@ -6,17 +6,22 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
 //import Stripe from 'react-native-stripe-payments';
 import axios from "axios";
 import querystring from "querystring";
-
+import { LogBox } from 'react-native';
 
 import CreditCardForm from './CreditCardForm';
 
 
 export default function PaymentForm(props) {
+
+    useEffect(() => {
+        LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+    }, [])
+
     const [cardDetails, setCardDetails] = useState({});
-    const [cardNumber, setCardNumber] = useState('4242424242424242');
-    const [expMonth, setExpMonth] = useState('12');
-    const [expYear, setExpYear] = useState('2023');
-    const [cvc, setCvc] = useState('123');
+    const [cardNumber, setCardNumber] = useState('');
+    const [expMonth, setExpMonth] = useState('');
+    const [expYear, setExpYear] = useState('');
+    const [cvc, setCvc] = useState('');
 
 
     const [loading, setLoading] = useState(false);
@@ -24,6 +29,14 @@ export default function PaymentForm(props) {
     const handleCardDetailsChange = (cardDetails) => {
         setCardDetails(cardDetails);
     };
+
+    const reset=()=>{
+        setCardDetails("")
+        setCardNumber("")
+        setExpMonth("")
+        setExpYear("")
+        setCvc("");
+    }
 
     const handlePayPress = async (cardNumber,expMonth,expYear,cvc) => {
         setLoading(true);
@@ -62,8 +75,11 @@ export default function PaymentForm(props) {
                           'Content-Type': 'application/x-www-form-urlencoded'
                         }
                       });
+                      console.log("amount");
+                      console.log(props.labelDetails.price);
                       let amount=props.labelDetails.price.split(".")
                       let penny=amount[1].split('')
+                      
                       amount=amount[0]+(penny.lenght>0&&penny[0])+(penny.length>1&& penny[1])
                       amount =parseFloat(amount)*100
                       const currency = 'usd';
@@ -84,9 +100,11 @@ export default function PaymentForm(props) {
                       const data = querystring.stringify(chargeData);
                       const charge = await stripe.post('/v1/charges', data);
 
+                      reset();
+                      
                       props.setModalVisible(true);
-                   
                       props.setPaymentFailed(false);
+                      
 
 
                 }catch(error){

@@ -14,7 +14,9 @@ import axios from "axios";
 import { child } from 'firebase/database';
 import { getIndieNotificationInbox } from 'native-notify';
 
-import { useIsFocused  } from "@react-navigation/native"
+import { HStack, Stack, VStack, TextInput, IconButton, Spacer } from "@react-native-material/core";
+
+import { useIsFocused } from "@react-navigation/native"
 const ICONS = {
     open: require('../assets/open.jpg'),
     close: require('../assets/close.jpg'),
@@ -64,7 +66,7 @@ function Home({ route, navigation }) {
                         toggleRefresh()
                     }}
                 >
-                    <View style={{ backgroundColor: "black", borderRadius: 20, }}>
+                    <View style={{ backgroundColor: "black", borderRadius: 20, marginLeft:10 }}>
                         <Text style={styles.buttonHistoryText}>Refresh</Text>
                     </View>
                 </TouchableOpacity>
@@ -74,7 +76,6 @@ function Home({ route, navigation }) {
 
 
     const execute = () => {
-        // console.log(route.params)
         if (route.params?.token != null) {
             setIsLogin(true)
             console.log("Home API Callback")
@@ -120,15 +121,14 @@ function Home({ route, navigation }) {
 
     useEffect(() => {
         // //Brute Login 
-        route.params={}
-        route.params.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MTQsIm5hbWUiOiJzaHJhdnlhIGRhbWFyYXBlbGxpIn0sImlhdCI6MTY3OTQxNDkwMiwiZXhwIjoxNjc5NDQwMTAyfQ.2ILcwiau2N1bVvkn6gBO_p-MIhlvnRo8_z6M8PLzQ2c';
-        // //Brute Login 
-        
+        route.params = {}
+        route.params.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MiwibmFtZSI6IlNocmF2eWEgRGFtYXJhcGVsbGkifSwiaWF0IjoxNjc5NTI5NzYwLCJleHAiOjE2Nzk1NTQ5NjB9.Mm_BCwg8YftokpXb7WRPhu2r21qRmKfuiHWHUbeG2yc';
+        //Brute Login 
         if (route.params?.token == null) {
             navigation.navigate('Login', {
             })
         }
-        return(()=>{
+        return (() => {
             setRefresh(!refresh);
         })
     }, [])
@@ -144,7 +144,7 @@ function Home({ route, navigation }) {
 
     useEffect(() => {
         isFocused && execute()
-      },[isFocused]);
+    }, [isFocused]);
 
 
     const toggleRefresh = (val) => {
@@ -183,7 +183,6 @@ function Home({ route, navigation }) {
     return (
         <ScrollView>
             <View style={{ marginBottom: 50 }}>
-
                 <View style={{ marginLeft: "0%" }}>
                     <Pressable style={styles.button2} onPress={() => toggleForm(true)}>
                         <Text style={styles.buttonText}>{btnTxt}</Text>
@@ -195,47 +194,29 @@ function Home({ route, navigation }) {
                         <Text style={styles.buttonText}>{btnTxt1}</Text>
                     </Pressable>
                 </View>
-
-
                 {deleteMessage && <Text>Deleted Succesfully</Text>}
-                {/* <Pressable style={styles.button2} onPress={()=>toggleRefresh()}>
-                                <Text style={styles.buttonText}>Refresh</Text>
-                            </Pressable> */}
-                {/* {viewForm && <NewTracking userId={route.params?.userId} token={route.params?.token} showForm={toggleForm} navigation={navigation} />} */}
-                <Text style={{ fontSize: 16, paddingLeft: 20, paddingTop: 10, paddingBottom: 10, marginTop: 20, backgroundColor: "lightgreen" }}>Pending shipments</Text>
-                {/*  <FlatList nestedScrollEnabled
-                    keyExtractor={(item) => item.id}
-                    data={pendingItemsList}
-                    renderItem={({ index, item }) => {
-                        console.log(item)
-                        return <PendingList index={index} item={item} token={route.params?.token} navigation={navigation} />
-                    }}
-                >
-                </FlatList> */}
-                <ScrollView>
-                    {pendingItemsList.map((item, index) => (
-                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh} />
-                    ))}
-                </ScrollView>
-                <Text style={{ fontSize: 16, paddingLeft: 20, paddingTop: 10, paddingBottom: 10, marginTop: 20, backgroundColor: "lightgreen" }}>Delivered shipments</Text>
 
-                <ScrollView>
-                    {deliveredItemsList.map((item, index) => (
-                        <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh} />
-                    ))}
-                </ScrollView>
+                <VStack m={4} spacing={2} divider={true} >
+                    <VStack m={1} spacing={2} divider={true} style={{ borderWidth: 2, borderRadius: 10 }}>
+                        <Text style={{ textAlign:"center",fontSize: 18, paddingLeft: 20, paddingTop: 10, paddingBottom: 10, marginTop: 5, backgroundColor: "lightgreen",fontWeight:"Bold" }}>Pending shipments</Text>
+                        <ScrollView>
+                            {pendingItemsList.map((item, index) => (
+                                <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh} />
+                            ))}
+                        </ScrollView>
+                    </VStack>
+
+                    <VStack m={1} spacing={2} divider={true} style={{ borderWidth: 2, borderRadius: 10 }}>
+                        <Text style={{textAlign:"center", fontSize: 18, paddingLeft: 20, paddingTop: 10, paddingBottom: 10, marginTop: 5, backgroundColor: "lightgreen",fontWeight:"Bold"  }}>Delivered shipments</Text>
+                        <ScrollView>
+                            {deliveredItemsList.map((item, index) => (
+                                <PendingList key={index} index={index} item={item} token={route.params?.token} navigation={navigation} deleteMessage={btnsetDeleteMessage} refresh={toggleRefresh} />
+                            ))}
+                        </ScrollView>
+                    </VStack>
+                </VStack>
 
 
-
-                {/* <FlatList nestedScrollEnabled
-                    keyExtractor={(item) => item.id}
-                    data={deliveredItemsList}
-                    renderItem={({ index, item }) => {
-                        console.log(item)
-                        return <PendingList index={index} item={item} token={route.params?.token} navigation={navigation} />
-                    }}
-                >
-                </FlatList> */}
 
             </View>
         </ScrollView>
