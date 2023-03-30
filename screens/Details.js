@@ -27,12 +27,12 @@ function Details(props) {
     setIsLoading(true);
     console.log("Start Tracking API calling")
     //const uri=`${process.env.ROUTE}/tracking`
-    let uri = `http://localhost:3000/ship/trackingMoreDetails`;
+    let uri = `https://www.shravyarani.com/ship/trackingMoreDetails`;
     let reqBody = {
       "trackingNum": props.item.trackingId
     }
     if (props.item.labelUrl.length > 0 && props.item.status != "DELIVERED" && props.item.shippoShipmentId.length > 0) {
-      uri = `http://localhost:3000/ship/pendingTrackingMoreDetails`;
+      uri = `https://www.shravyarani.com/ship/pendingTrackingMoreDetails`;
     } else {
       reqBody["trackingNum"] = props.tNum
       reqBody["id"] = props.id;
