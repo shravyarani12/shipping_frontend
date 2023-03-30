@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback, View, Pressable, Image,TextInput } from 'react-native';
-import { Stack, IconButton } from "@react-native-material/core";
+import { Text, StyleSheet, SafeAreaView, Keyboard, TouchableWithoutFeedback, View, Pressable, Image } from 'react-native';
+import { Stack, TextInput,IconButton } from "@react-native-material/core";
 import { LogBox } from 'react-native';
 
 import FontAwesome5 from 'react-native-vector-icons/MaterialIcons';
@@ -13,15 +13,15 @@ export default function TxtInput(props) {
 
     return (
         <View style={styles.inputContainer}>
-            {/* <TextInput
+            <TextInput
                 variant='outlined'
                 value={props.state[props.stateKey]}
                 onChangeText={newText => props.handleChange(newText, props.stateKey)}
                 label={props.label}
 
-            /> */}
+            />
 
-            <TextInput
+            {/* <TextInput
                 type="text"
                 style={{
                     height: 40,
@@ -33,7 +33,7 @@ export default function TxtInput(props) {
                 value={props.state[props.stateKey]}
                 onChangeText={newText => props.handleChange(newText, props.stateKey)}
                 placeholder={props.labe}
-            />
+            /> */}
 
 
             {props.state[props.stateKey].length > 0 &&
