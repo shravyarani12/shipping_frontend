@@ -627,6 +627,8 @@ function ShipmentLabel({ route, navigation }) {
                                 <Pressable style={styles.save} onPress={() => {
                                     validateAddress("to").then((res) => {
                                         setNext(2)
+                                    }).catch(err=>{
+                                        console.log(err)
                                     })
                                 }}>
                                     <Text style={styles.buttonText}>Save and Next</Text>

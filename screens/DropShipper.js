@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
+import { Dropdown} from 'react-native-element-dropdown';
 
 const data = [
     { "label": "Fedex", "value": "Fedex" },

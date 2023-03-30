@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
 import { LogBox  } from 'react-native';
 
 const data = [

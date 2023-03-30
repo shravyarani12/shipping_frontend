@@ -143,7 +143,7 @@ function AddTracking({ route, navigation }) {
 
     return (
         <View>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
                 <SafeAreaView style={styles.container1} >
                     <SafeAreaView style={styles.container2}>
                         <VStack spacing={20} m={12} divider={true}>
@@ -182,7 +182,7 @@ function AddTracking({ route, navigation }) {
                         </SafeAreaView>
                     </SafeAreaView>
                 </SafeAreaView>
-            </TouchableWithoutFeedback>
+            {/* </TouchableWithoutFeedback> */}
         </View>
     )
 }
