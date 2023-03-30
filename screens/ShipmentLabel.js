@@ -46,27 +46,27 @@ const addressDefaultValue = {
 };
 
 
-const addressToDefaultValue = {
-    "name": "Shravya Rani",
-    "street1": "8300 old kings rd s",
-    "street2": "Apt 99",
-    "city": "Jacksonville",
-    "state": "FL",
-    "zip": "32217",
-    "country": "US",
-    "savedb": "false"
-};
+// const addressToDefaultValue = {
+//     "name": "Shravya Rani",
+//     "street1": "8300 old kings rd s",
+//     "street2": "Apt 99",
+//     "city": "Jacksonville",
+//     "state": "FL",
+//     "zip": "32217",
+//     "country": "US",
+//     "savedb": "false"
+// };
 
-const addressFromDefaultValue = {
-    "name": "Secondary",
-    "street1": "706 Stampede Ln",
-    "street2": "",
-    "city": "Princeton",
-    "state": "TX",
-    "zip": "75407",
-    "country": "US",
-    "savedb": "false"
-};
+// const addressFromDefaultValue = {
+//     "name": "Secondary",
+//     "street1": "706 Stampede Ln",
+//     "street2": "",
+//     "city": "Princeton",
+//     "state": "TX",
+//     "zip": "75407",
+//     "country": "US",
+//     "savedb": "false"
+// };
 
 
 const addressErrDefaultValue = {
@@ -79,26 +79,26 @@ const addressErrDefaultValue = {
     "country": null,
 };
 
-const parcelDefaultValue = {
-    "length": "11",
-    "width": "11",
-    "height": "11",
-    "distance_unit": "in",
-    "weight": "11",
-    "mass_unit": "lb",
-    "name": "Amazon",
-    "savedb": "false"
-};
 // const parcelDefaultValue = {
-//     "length": "",
-//     "width": "",
-//     "height": "",
+//     "length": "11",
+//     "width": "11",
+//     "height": "11",
 //     "distance_unit": "in",
-//     "weight": "",
+//     "weight": "11",
 //     "mass_unit": "lb",
-//     "name": "",
+//     "name": "Amazon",
 //     "savedb": "false"
 // };
+const parcelDefaultValue = {
+    "length": "",
+    "width": "",
+    "height": "",
+    "distance_unit": "in",
+    "weight": "",
+    "mass_unit": "lb",
+    "name": "",
+    "savedb": "false"
+};
 
 
 const parcelErrValue = {
@@ -165,10 +165,10 @@ function ShipmentLabel({ route, navigation }) {
 
     const [next, setNext] = useState(1);
 
-    const [toAddress, setToAddress] = useState({ ...addressToDefaultValue })
+    const [toAddress, setToAddress] = useState({ ...addressDefaultValue })
     const [toerr, setToErr] = useState({ ...addressErrDefaultValue });
 
-    const [fromAddress, setFromAddress] = useState({ ...addressFromDefaultValue })
+    const [fromAddress, setFromAddress] = useState({ ...addressDefaultValue })
     const [fromerr, setFromErr] = useState({ ...addressErrDefaultValue });
 
 

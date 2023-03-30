@@ -18,47 +18,55 @@ function Details(props) {
 
   const [state, setState] = useState(null);
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+
+  const [isLoading,setIsLoading]=useState(false);
+
   const callShowMoreDetails = useCallback((tNum) => {
+
+    setIsLoading(true);
     console.log("Start Tracking API calling")
     //const uri=`${process.env.ROUTE}/tracking`
-    const uri = `https://www.shravyarani.com/ship/trackingMoreDetails`;
-    
-    console.log({
-      "id": props.id,
-      "shipper": props.shipper,
-      "trackingNum": props.tNum
-    })
-    axios.post(uri, {
-      "id": props.id,
-      "shipper": props.shipper,
-      "trackingNum": props.tNum
-    }, {
+    let uri = `http://localhost:3000/ship/trackingMoreDetails`;
+    let reqBody = {
+      "trackingNum": props.item.trackingId
+    }
+    if (props.item.labelUrl.length > 0 && props.item.status != "DELIVERED" && props.item.shippoShipmentId.length > 0) {
+      uri = `http://localhost:3000/ship/pendingTrackingMoreDetails`;
+    } else {
+      reqBody["trackingNum"] = props.tNum
+      reqBody["id"] = props.id;
+      reqBody["shipper"] = props.shipper;
+    }
+    axios.post(uri, reqBody, {
       headers: {
         "authorization": "Bearer " + props.token,
         "content-type": "application/json"
       }
     }).then(res => {
       console.log("Tracking API calling")
-      //console.log(res.data.tracking_number==props.tNum)
       if (res.status == 200 && res.data.tracking_number == props.tNum) {
         if (res.data && res.data.tracking_number != null && res.data.tracking_status?.status != null) {
           setState({ ...res.data });
+          setIsLoading(false);
         } else {
           setError("true");
           setState(null)
+          setIsLoading(false);
         }
 
       } else {
         console.log("errror")
         setError("true");
         setState(null)
+        setIsLoading(false);
       }
     }).catch(err => {
       console.log("API Error")
       console.log(JSON.stringify(err));
       setError("true");
       setState(null)
+      setIsLoading(false);
     })
   }, []);
 
@@ -68,10 +76,25 @@ function Details(props) {
     callShowMoreDetails()
   }, [callShowMoreDetails])
 
-  console.log(state)
   return (
     <View>
+
+      {isLoading && <View style={{
+        zIndex: 3,
+        textAlign: 'center',
+        display: "flex",
+        justifyContent: "center",
+        height: "100%"
+      }}>
+        <Image
+          style={{ alignSelf: "center", width: 50, height: 50, marginBottom: 50 }}
+          source={require("../assets/loading_1.gif")}
+        />
+      </View>}
+
+
       {error && <Text style={{ color: "white", backgroundColor: "red" }}>Failed to Get More Details</Text>}
+
       {state && state.tracking_number != null && state.tracking_status?.status != null &&
         <View>
           <HStack m={4} spacing={2} divider={true}>
@@ -103,18 +126,20 @@ function Details(props) {
             </HStack>
             <VStack m={4} spacing={2} divider={true} style={{ borderWidth: 2, borderRadius: 10, paddingBottom: 5 }}>
               <Text style={{ paddingLeft: 10, paddingTop: 5, fontWeight: "bold", fontSize: 15 }}>Status:</Text>
-              <Text style={styles.detailsText}>Status_date: {state.tracking_status.status_date}</Text>
-              <Text style={styles.detailsText}>Status_details: {state.tracking_status.status_details},</Text>
-              <Text style={styles.detailsText}>Status_message: {state.tracking_status.substatus.text}</Text>
+              {state.tracking_status.status_date && <Text style={styles.detailsText}>Status_date: {state.tracking_status.status_date}</Text>}
+              {state.tracking_status.status_details && <Text style={styles.detailsText}>Status_details: {state.tracking_status.status_details},</Text>}
+              {state.tracking_status.substatus && <Text style={styles.detailsText}>Status_message: {state.tracking_status.substatus.text}</Text>}
             </VStack>
             <Spacer />
             <VStack m={4} spacing={2} divider={true} style={{ borderWidth: 2, borderRadius: 10, paddingBottom: 5 }}>
               <Text style={{ paddingLeft: 10, paddingTop: 5, fontWeight: "bold", fontSize: 14 }}>Current Location:</Text>
               <SafeAreaView style={{ dispaly: "flex", flexDirection: "column" }}>
-                <Text style={styles.detailsText} >City:{state.tracking_status.location.city}</Text>
-                <Text style={styles.detailsText} >State: {state.tracking_status.location.state}</Text>
-                <Text style={styles.detailsText}  >Zip:{state.tracking_status.location.zip}</Text>
-                <Text style={styles.detailsText}  >Country:{state.tracking_status.location.country}</Text>
+                {state.tracking_status.location && <>  <Text style={styles.detailsText} >City:{state.tracking_status.location.city}</Text>
+                  <Text style={styles.detailsText} >State: {state.tracking_status.location.state}</Text>
+                  <Text style={styles.detailsText}  >Zip:{state.tracking_status.location.zip}</Text>
+                  <Text style={styles.detailsText}  >Country:{state.tracking_status.location.country}</Text>
+                </>}
+                {!state.tracking_status.location && <Text style={styles.detailsText}  >Unknown</Text>}
               </SafeAreaView>
             </VStack>
           </SafeAreaView>

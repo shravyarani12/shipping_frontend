@@ -59,6 +59,8 @@ export default function RatesList(props) {
         setIsLoading(true);
         setApiErr("true");
         return new Promise((resolve, reject) => {
+            console.log("item")
+            console.log(item)
             const uri = `https://www.shravyarani.com/ship/createShipmentLabel`;
             console.log(item)
             axios.post(uri, { rateId: item.object_id }, {
@@ -74,9 +76,10 @@ export default function RatesList(props) {
 
                     setLabelDetails({ ...res.data.transaction, price:item.amount })
                     if (res.data.transaction.object_state = "VALID" && res.data.transaction.status != "ERROR") {
-                        const uri = `https://www.shravyarani.com/ship/addTracking`;
-                        console.log({ name: props.name, trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider,labelUrl:res.data.transaction.label_url })
-                        axios.post(uri, { name: props.name.split("-")[0], trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider,labelUrl:res.data.transaction.label_url  }, {
+                        //const uri = `https://www.shravyarani.com/ship/addTracking`;
+                        const uri = `http://localhost:3000/ship/addTracking`;
+                        console.log({ name: props.name, trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider,labelUrl:res.data.transaction.label_url,shippoShipmentId:item.shipment })
+                        axios.post(uri, { name: props.name.split("-")[0], trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider,labelUrl:res.data.transaction.label_url,shippoShipmentId:item.shipment  }, {
                             headers: {
                                 "authorization": "Bearer " + props.route.params.token,
                                 "content-type": "application/json"

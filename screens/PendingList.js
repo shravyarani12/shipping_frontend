@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Text, StyleSheet, SafeAreaView, Keyboard, FlatList, TouchableWithoutFeedback, View, Pressable, Image, TouchableHighlight,Linking } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Keyboard, FlatList, TouchableWithoutFeedback, View, Pressable, Image, TouchableHighlight, Linking } from 'react-native';
 import { Button, Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
@@ -15,8 +15,8 @@ import axios from "axios";
 const ICONS = {
     open: require('../assets/open.jpg'),
     close: require('../assets/close.jpg'),
-    delete:require('../assets/delete.png'),
-    delete1:require('../assets/delete1.jpg')
+    delete: require('../assets/delete.png'),
+    delete1: require('../assets/delete1.jpg')
 };
 
 
@@ -44,38 +44,38 @@ function PendingList(props) {
 
     const deleteEntry = (val) => {
 
-          //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
-          const uri=`https://www.shravyarani.com/ship/deleteTracking`;
-          axios.post(uri, { trackingId:val }, {
-              headers: {
-                  "authorization": "Bearer " + props.token,
-                  "content-type": "application/json"
-              }
-          }).then(res => {
-              console.log("Delete Tracking")
-              console.log(res.status)
-              if (res.status == 200) {
+        //const uri = `http://${manifest.debuggerHost.split(':').shift()}:8080/addShippment`;
+        const uri = `https://www.shravyarani.com/ship/deleteTracking`;
+        axios.post(uri, { trackingId: val }, {
+            headers: {
+                "authorization": "Bearer " + props.token,
+                "content-type": "application/json"
+            }
+        }).then(res => {
+            console.log("Delete Tracking")
+            console.log(res.status)
+            if (res.status == 200) {
                 props.deleteMessage("deleted")
-                setTimeout(()=>{
+                setTimeout(() => {
                     props.refresh();
-                },500)
-              }else {
-                  console.log(res)
-                  setDeleteError("True");    
-              }
-          }).catch(err => {
-              console.log(err.response.data);
-              console.log(JSON.stringify(err));
-              setDeleteError("True");
-              
-          })
+                }, 500)
+            } else {
+                console.log(res)
+                setDeleteError("True");
+            }
+        }).catch(err => {
+            console.log(err.response.data);
+            console.log(JSON.stringify(err));
+            setDeleteError("True");
+
+        })
     }
 
 
     return (
         <View key={props.index}>
             <SafeAreaView style={{ marginTop: 5, borderBottomWidth: 1 }} key={props.index}>
-                <SafeAreaView style={{ display: "flex", flexDirection: "row",justifyContent: "space-between", width: "100%", backgroundColor: "#ABD3D5", marginBottom: 2, marginTop: 2 }} >
+                <SafeAreaView style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%", backgroundColor: "#ABD3D5", marginBottom: 2, marginTop: 2 }} >
                     <View style={{ paddingLeft: 10, float: "left" }} >
 
                         <TouchableWithoutFeedback onPress={() => toggleMore(true)}   >
@@ -88,13 +88,13 @@ function PendingList(props) {
                     <View style={{ paddingLeft: 10, float: "left" }}>
                         <Text style={styles.textResult1}>{`Item Name:` + props.item.name}</Text>
                     </View>
-                    <View style={{ "marginLeft": "auto",paddingRight: 10  }}>
+                    <View style={{ "marginLeft": "auto", paddingRight: 10 }}>
                         <TouchableWithoutFeedback onPress={() => deleteEntry(props.item.trackingId)}   >
-                            <View style={{display: "flex", flexDirection: "row", alignItems: "stretch",backgroundColor:"red",borderRadius:70}}>
-                            <Image
-                                style={{ paddingLeft: 30, width: 35, height: 35  }}
-                                source={ICONS["delete1"]}
-                            />
+                            <View style={{ display: "flex", flexDirection: "row", alignItems: "stretch", backgroundColor: "red", borderRadius: 70 }}>
+                                <Image
+                                    style={{ paddingLeft: 30, width: 35, height: 35 }}
+                                    source={ICONS["delete1"]}
+                                />
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -109,10 +109,10 @@ function PendingList(props) {
                         <Text style={styles.textResult}>{`Tracking Numnber: ` + props.item.trackingNum}</Text>
                     </SafeAreaView>
 
-                    { props.item.labelUrl.length>0 && 
-                    <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
-                        <Text style={styles.textResult}  onClick={()=>Linking.openURL(props.item.labelUrl)} >URL Link</Text>
-                    </SafeAreaView>
+                    {props.item.labelUrl.length > 0 &&
+                        <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
+                            <Text style={styles.textResultLink} onClick={() => Linking.openURL(props.item.labelUrl)} >URL Links</Text>
+                        </SafeAreaView>
                     }
 
 
@@ -126,7 +126,7 @@ function PendingList(props) {
                     </SafeAreaView>
 
                     {expandMore && <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
-                        <Details tNum={props.item.trackingNum} token={props.token} shipper={props.item.shippingProvider} id={props.item.trackingId} navigation={props.navigation}/>
+                        <Details tNum={props.item.trackingNum} token={props.token} shipper={props.item.shippingProvider} id={props.item.trackingId} navigation={props.navigation} item={props.item} />
                     </SafeAreaView>
                     }
                 </SafeAreaView>}
@@ -205,8 +205,8 @@ const styles = StyleSheet.create({
         color: 'black',
         paddingLeft: 10,
         paddingRight: 10,
-        borderWidth:1,
-        borderRadius:20
+        borderWidth: 1,
+        borderRadius: 20
     },
 
     textResult: {
@@ -216,7 +216,8 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 5,
         fontWeight: "bold",
-        fontSize: 14
+        fontSize: 14,
+
     },
     textResult1: {
         flex: 1, textAlign: "left", borderWidth: 0,
@@ -226,6 +227,19 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         fontWeight: "bold",
         fontSize: 14
+    },
+    textResultLink: {
+        flex: 1, textAlign: "left", borderWidth: 0,
+        borderRadius: 0,
+        paddingLeft: 10,
+        paddingTop: 5,
+        paddingBottom: 5,
+        fontWeight: "bold",
+        fontSize: 14,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+        textDecorationColor: "#000",
+        color: "blue"
     },
     container2: {
         flexDirection: "column"
