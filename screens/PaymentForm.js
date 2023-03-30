@@ -75,8 +75,7 @@ export default function PaymentForm(props) {
                           'Content-Type': 'application/x-www-form-urlencoded'
                         }
                       });
-                      console.log("amount");
-                      console.log(props.labelDetails.price);
+
                       let amount=props.labelDetails.price.split(".")
                       let penny=amount[1].split('')
                       
@@ -102,21 +101,38 @@ export default function PaymentForm(props) {
 
                       reset();
                       
+
+
+                      try{
+                        let createLabel=await props.afterPayment(props.item);
                       props.setModalVisible(true);
                       props.setPaymentFailed(false);
+                      }catch(err){
+                        console.log("Create Error");
+                        console.error(error);
+                        props.setPaymentFailed(false);
+                        props.setModalVisible(true);
+
+                      }
+
+                      
                       
 
 
                 }catch(error){
-                    console.error(error);
+                    console.log("Create Error");
+                        console.error(error);
+                    props.setPaymentFormVisible(true)
                     props.setPaymentFailed(true)
                     props.setModalVisible(true);
 
                 }
     
             }).catch((error) => {
+                console.log("Token Error");
                 console.error(error);
-                props.setPaymentFailed(false)
+                props.setPaymentFormVisible(true)
+                props.setPaymentFailed(true)
                 props.setModalVisible(true);
             });
             setLoading(false);

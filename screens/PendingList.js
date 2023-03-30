@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Text, StyleSheet, SafeAreaView, Keyboard, FlatList, TouchableWithoutFeedback, View, Pressable, Image, TouchableHighlight } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, Keyboard, FlatList, TouchableWithoutFeedback, View, Pressable, Image, TouchableHighlight,Linking } from 'react-native';
 import { Button, Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
@@ -108,6 +108,14 @@ function PendingList(props) {
                     <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
                         <Text style={styles.textResult}>{`Tracking Numnber: ` + props.item.trackingNum}</Text>
                     </SafeAreaView>
+
+                    { props.item.labelUrl.length>0 && 
+                    <SafeAreaView style={{ display: "flex", flexDirection: "column", alignItems: "stretch" }}>
+                        <Text style={styles.textResult}  onClick={()=>Linking.openURL(props.item.labelUrl)} >URL Link</Text>
+                    </SafeAreaView>
+                    }
+
+
                     <SafeAreaView style={{ flexDirection: "row", justifyContent: "flex-start" }}>
                         <Pressable style={styles.button3} onPress={() => callShowMoreDetails()}>
                             <Text style={styles.buttonText}>Click here for {expandMoreText}</Text>

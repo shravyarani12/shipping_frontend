@@ -122,7 +122,7 @@ function Home({ route, navigation }) {
     useEffect(() => {
         // //Brute Login 
         route.params = {}
-        route.params.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MiwibmFtZSI6IlNocmF2eWEgRGFtYXJhcGVsbGkifSwiaWF0IjoxNjc5NTI5NzYwLCJleHAiOjE2Nzk1NTQ5NjB9.Mm_BCwg8YftokpXb7WRPhu2r21qRmKfuiHWHUbeG2yc';
+        route.params.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MTQsIm5hbWUiOiJzaHJhdnlhIGRhbWFyYXBlbGxpIn0sImlhdCI6MTY4MDE1MTM1MCwiZXhwIjoxNjgwMTc2NTUwfQ.iM0Mw9RAXwi52Yn4n0jzAgFjJEhWrtQ4hHNMWl2nwbQ';
         //Brute Login 
         if (route.params?.token == null) {
             navigation.navigate('Login', {

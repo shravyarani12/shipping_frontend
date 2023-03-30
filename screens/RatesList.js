@@ -42,6 +42,8 @@ export default function RatesList(props) {
     const [paymentFormVisible, setPaymentFormVisible] = useState(false);
     const [paymentFailed, setPaymentFailed] = useState(false);
 
+    const [pitem,setPItem]=useState({});
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -52,9 +54,7 @@ export default function RatesList(props) {
 
 
 
-    function getLabel(item) {
-
-
+    function afterPayment(item) {
         //SaveDb
         setIsLoading(true);
         setApiErr("true");
@@ -75,16 +75,14 @@ export default function RatesList(props) {
                     setLabelDetails({ ...res.data.transaction, price:item.amount })
                     if (res.data.transaction.object_state = "VALID" && res.data.transaction.status != "ERROR") {
                         const uri = `https://www.shravyarani.com/ship/addTracking`;
-                        console.log({ name: props.name, trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider })
-                        axios.post(uri, { name: props.name.split("-")[0], trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider }, {
+                        console.log({ name: props.name, trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider,labelUrl:res.data.transaction.label_url })
+                        axios.post(uri, { name: props.name.split("-")[0], trackingNum: res.data.transaction.tracking_number, shippingProvider: item.provider,labelUrl:res.data.transaction.label_url  }, {
                             headers: {
                                 "authorization": "Bearer " + props.route.params.token,
                                 "content-type": "application/json"
                             }
                         }).then(res => {
                             console.log("setPaymentFormVisible")
-
-                            setPaymentFormVisible(true);
                             setIsLoading(false);
                             setApiErr("false")
                             setApiLabelErr("false")
@@ -92,14 +90,12 @@ export default function RatesList(props) {
 
 
                         }).catch(err => {
-                            setPaymentFormVisible(true);
                             setIsLoading(false);
                             setApiErr("false")
                             setApiLabelErr("true")
                             setModalVisible(true)
                         })
                     } else {
-                        setPaymentFormVisible(true);
                         setIsLoading(false);
                         setApiErr("false")
                         setApiLabelErr("true")
@@ -130,6 +126,13 @@ export default function RatesList(props) {
                 return reject("")
             })
         })
+    }
+
+    function getLabel(item) {
+        setLabelDetails({price:item.amount})
+        setPItem({...item})
+        setPaymentFormVisible(true);
+
     }
 
 
@@ -287,7 +290,7 @@ export default function RatesList(props) {
 
             }
 
-            {!paymentFailed && paymentFormVisible && <PaymentForm setModalVisible={setModalVisible} setPaymentFailed={setPaymentFailed}  labelDetails={labelDetails} setPaymentFormVisible={setPaymentFormVisible} navigation={props.navigation} />}
+            {paymentFormVisible && <PaymentForm afterPayment={afterPayment} item={pitem} setModalVisible={setModalVisible} setPaymentFailed={setPaymentFailed}  labelDetails={labelDetails} setPaymentFormVisible={setPaymentFormVisible} navigation={props.navigation} />}
 
             <Modal isVisible={isModalVisible} style={{ maxHeight: 300, borderRadius: 20 }}>
                 <View style={{ flex: 1, backgroundColor: "white", paddingTop: 50, paddingRight: 15, paddingLeft: 15, height: 50, border: 15, borderRadius: 15 }}>
@@ -343,12 +346,13 @@ export default function RatesList(props) {
                                 setEmail("");
                                 setEmailErr("false");
                                 setEmailSent(null)
-
-                                props.navigation.navigate('Home', {
-                                    isLogin: "True",
-                                    uId: props.route.params.uId,
-                                    token: props.route.params.token
-                                })
+                                if(!paymentFailed){
+                                    props.navigation.navigate('Home', {
+                                        isLogin: "True",
+                                        uId: props.route.params.uId,
+                                        token: props.route.params.token
+                                    })
+                                }
                             }} >CLOSE</Text>
                     </View>
 
