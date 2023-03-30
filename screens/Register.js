@@ -4,7 +4,7 @@ import { Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { initDBConnection, storeHistoryItem, setupDataListener } from "../helpers/fb-history";
+//import { initDBConnection, storeHistoryItem, setupDataListener } from "../helpers/fb-history";
 import axios from "axios";
 
 
@@ -137,13 +137,13 @@ function Register({ route, navigation }) {
     }
 
 
-    useEffect(() => {
-        try {
-            initDBConnection()
-        } catch (err) {
-            console.log(err);
-        }
-    }, [])
+    // useEffect(() => {
+    //     try {
+    //         initDBConnection()
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }, [])
 
 
     return (

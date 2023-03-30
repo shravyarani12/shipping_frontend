@@ -4,16 +4,16 @@ import { Button, Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { initDBConnection, setupDataProfileListener } from "../helpers/fb-history"
+//import { initDBConnection, setupDataProfileListener } from "../helpers/fb-history"
 const ICONS = {
     logo: require('../assets/logo.jpg'),
     loading: require('../assets/loading.gif'),
 };
 import axios from "axios";
-import { registerIndieID } from 'native-notify';
+//import { registerIndieID } from 'native-notify';
 import Constants from "expo-constants";
 const { manifest } = Constants;
-import * as Notifications from 'expo-notifications';
+//import * as Notifications from 'expo-notifications';
 
 async function registerForPushNotificationsAsync() {
     let token;
@@ -166,13 +166,13 @@ function Login({ route, navigation }) {
         }
     }
 
-    useEffect(() => {
-        try {
-            initDBConnection()
-        } catch (err) {
-            console.log(err);
-        }
-    }, [])
+    // useEffect(() => {
+    //     try {
+    //         initDBConnection()
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }, [])
 
 
     useEffect(() => {

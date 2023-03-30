@@ -4,7 +4,7 @@ import { Button, Input } from "react-native-elements";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { setupDataListener } from "../helpers/fb-history";
+//import { setupDataListener } from "../helpers/fb-history";
 import NewTracking from "./NewTracking";
 import PendingList from "./PendingList";
 
@@ -12,7 +12,7 @@ import Constants from "expo-constants";
 const { manifest } = Constants;
 import axios from "axios";
 import { child } from 'firebase/database';
-import { getIndieNotificationInbox } from 'native-notify';
+//import { getIndieNotificationInbox } from 'native-notify';
 
 import { HStack, Stack, VStack, TextInput, IconButton, Spacer } from "@react-native-material/core";
 
@@ -20,7 +20,6 @@ import { useIsFocused } from "@react-navigation/native"
 const ICONS = {
     open: require('../assets/open.jpg'),
     close: require('../assets/close.jpg'),
-
 };
 function Home({ route, navigation }) {
     console.log("Home")

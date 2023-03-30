@@ -11,7 +11,7 @@ import AddTracking from './screens/AddTracking';
 import ShipmentLabel from './screens/ShipmentLabel';
 import RatesList from './screens/RatesList';
 import NewTracking from "./screens/NewTracking";
-import registerNNPushToken from 'native-notify';
+//import registerNNPushToken from 'native-notify';
 
 import Constants from "expo-constants";
 const { manifest } = Constants;
