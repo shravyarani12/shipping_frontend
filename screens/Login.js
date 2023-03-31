@@ -202,7 +202,7 @@ function Login({ route, navigation }) {
                     source={ICONS['logo']}
                 />
                 <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 35, marginLeft: 5, textAlign: "center" }}>
-                    Personal Shipping Assistant
+                    Personal Shipping Mananger
                 </Text>
             </View>
             <View style={{ flex: 1 }}>
