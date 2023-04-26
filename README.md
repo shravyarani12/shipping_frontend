@@ -8,7 +8,9 @@ Owners: Shravya Rani Damarapelli
 
 
 ## App is available at 
-### https://expo.dev/artifacts/eas/kK8i5d3hcPMEreEWPbgqHh.apk
+### android : https://expo.dev/artifacts/eas/kK8i5d3hcPMEreEWPbgqHh.apk
+
+### web: https://www.personalshippingassistant.com/
 
 This App features Adding tracking for the shippments delivered by Fedex, UPS, USPS where the app keeps on tracking and updating the details of these shipments
 without any hassle of us checking them in varios websites without login and navigating to individual orders everytime.
