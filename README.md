@@ -1,8 +1,8 @@
 # shipping_frontend (React Native)
-Owners: Shravya Rani Damarapelli & Sushmita Tharla
+Owners: Shravya Rani Damarapelli
 
 
-#### This was developed as part CIS 657 - Mobile App Development course
+#### This was developed as part CIS 693 - Capstone Project Winter 2023
 
 #### The backend is integrated to NodeJs based App avaiable at https://github.com/shravyarani12/shipping_backend
 
